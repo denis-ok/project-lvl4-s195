@@ -1,0 +1,54 @@
+{
+  "name": "hexlet-js-backend-4",
+  "version": "0.0.1",
+  "description": "hexlet-js-backend-project-4",
+  "main": "index.js",
+  "bin": {
+    "server": "dist/bin/app.js"
+  },
+  "engines": {
+    "node": "8.11.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "eslint": "eslint",
+    "babel-node": "babel-node",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublishOnly": "npm run build",
+    "nodemon": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denis-ok/project-lvl4-s195.git"
+  },
+  "author": "Denis Strelkov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/denis-ok/project-lvl4-s195/issues"
+  },
+  "homepage": "https://github.com/denis-ok/project-lvl4-s195#readme",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "eslint-plugin-jest": "^21.15.0",
+    "koa": "^2.5.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-logger": "^3.2.0",
+    "koa-pug": "^3.0.0-2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.3",
+    "babel-loader": "^7.1.4",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "jest": "^22.4.3",
+    "jest-cli": "^22.4.3",
+    "nodemon": "^1.17.3",
+    "supertest": "^3.0.0"
+  }
+}
