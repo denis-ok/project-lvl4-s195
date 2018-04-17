@@ -1,5 +1,6 @@
 export default (router) => {
   router.get('root', '/', (ctx) => {
-    ctx.body = 'Welcome!';
+    // ctx.state.title = 'welcome';
+    ctx.render('welcome/index', { title: 'welcome page' });
   });
 };

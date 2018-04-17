@@ -5,7 +5,7 @@ start-nodemon:
 	npm run nodemon -- --exec babel-node ./start.js
 
 start-debug:
-	DEBUG=app:* npm run nodemon -- --watch . --ext '.js' --exec babel-node ./start.js
+	DEBUG=app:* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./start.js
 
 build:
 	rm -rf dist
