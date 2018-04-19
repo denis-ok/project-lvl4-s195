@@ -1,4 +1,5 @@
 import Koa from 'koa';
+import serve from 'koa-static';
 import Pug from 'koa-pug';
 import Router from 'koa-router';
 import koaLogger from 'koa-logger';
@@ -8,6 +9,8 @@ import addRoutes from './routes';
 export default () => {
   const app = new Koa();
   app.use(koaLogger());
+
+  app.use(serve(path.join(__dirname, 'public')));
 
   const router = new Router();
   addRoutes(router);

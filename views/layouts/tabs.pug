@@ -1,0 +1,12 @@
+ul#myTab.nav.nav-tabs(role='tablist')
+  li.nav-item
+    a#home-tab.nav-link.active(data-toggle='tab' href='#home' role='tab' aria-controls='home' aria-selected='true') Home
+  li.nav-item
+    a#profile-tab.nav-link(data-toggle='tab' href='#profile' role='tab' aria-controls='profile' aria-selected='false') Profile
+  li.nav-item
+    a#contact-tab.nav-link(data-toggle='tab' href='#contact' role='tab' aria-controls='contact' aria-selected='false') Contact
+
+#myTabContent.tab-content
+  #home.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='home-tab') tab1
+  #profile.tab-pane.fade(role='tabpanel' aria-labelledby='profile-tab') tab2
+  #contact.tab-pane.fade(role='tabpanel' aria-labelledby='contact-tab') tab3

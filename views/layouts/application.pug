@@ -4,8 +4,11 @@ html(lang="en")
     meta(charset='utf-8')
     title= title
     script(src='./assets/app.js')
-    script(src='./assets/app.vendor.js')
+    script(src='./assets/vendors.app.js')
   body
-      block header
-      block content
-      block footer
+    include navBar.pug
+    include tabs.pug
+    
+    block header
+    block content
+    block footer
