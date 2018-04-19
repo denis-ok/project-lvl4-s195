@@ -7,9 +7,8 @@ start-nodemon:
 start-debug:
 	DEBUG=app:* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./start.js
 
-build:
-	rm -rf dist
-	npm run build
+build-webpack:
+	npm run webpack
 
 test:
 	npm test

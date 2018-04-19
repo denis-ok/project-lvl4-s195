@@ -1,8 +1,8 @@
 {
   "name": "hexlet-js-backend-4",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "hexlet-js-backend-project-4",
-  "main": "index.js",
+  "private": true,
   "bin": {
     "server": "dist/bin/app.js"
   },
@@ -43,6 +43,7 @@
     "popper.js": "^1.14.3"
   },
   "devDependencies": {
+    "autoprefixer": "^8.3.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
@@ -50,14 +51,20 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
     "jest": "^22.4.3",
     "jest-cli": "^22.4.3",
+    "node-sass": "^4.8.3",
     "nodemon": "^1.17.3",
+    "postcss-loader": "^2.1.4",
+    "precss": "^3.1.2",
+    "sass-loader": "^7.0.1",
+    "style-loader": "^0.20.3",
     "supertest": "^3.0.0",
-    "webpack": "^4.5.0",
+    "webpack": "^4.6.0",
     "webpack-cli": "^2.0.14"
   }
 }
