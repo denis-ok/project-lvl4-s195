@@ -1,10 +1,8 @@
 extends /layouts/application.pug
 
-block header
-  p= 'header1'
-
 block content
-  p= 'content2'
-
-block footer
-  p= 'footer3'
+  .jumbotron.jumbotron-fluid
+    .container
+      h1.display-4 Hexlet Task Manager
+      p.lead
+        | This is a simple task manager app powered by NodeJS and Koa.

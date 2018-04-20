@@ -1,14 +1,13 @@
+include /mixins/forms.pug
+
 doctype html
 html(lang="en")
   head
     meta(charset='utf-8')
-    title= title
-    script(src='./assets/app.js')
-    script(src='./assets/vendors.app.js')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title= title ? title : 'abc'
+    script(src='/assets/app.js')
+    script(src='/assets/vendors.app.js')
   body
     include navBar.pug
-    include tabs.pug
-    
-    block header
     block content
-    block footer

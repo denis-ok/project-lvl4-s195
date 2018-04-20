@@ -1,0 +1,32 @@
+extends /layouts/application.pug
+
+block content
+  .container
+    .py-4.text-center
+      h2 Registration
+      p.h6
+        | Just fill forms and click 'Submit'
+
+  .container
+    +formFor({ url: urlFor('users'), method: 'post' })
+      +input(formObj, 'email')
+      +input(formObj, 'firstName')
+      +input(formObj, 'lastName')
+      +input(formObj, 'password')
+      +button()
+
+
+//- block content
+//-   +formFor(f, { url: urlFor('users'), method: 'post' })
+//-     +input(f, 'email')
+//-     +input(f, 'firstName')
+//-     +input(f, 'lastName')
+//-     +input(f, 'password', { as: 'password' })
+//-     +button(f)
+
+      .form-group
+        label(for='exampleInputEmail1') Email address
+        input#exampleInputEmail1.form-control(type='email' placeholder='Enter email')
+      .form-group
+        label(for='exampleInputPassword1') Password
+        input#exampleInputPassword1.form-control(type='password' placeholder='Password')

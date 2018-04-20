@@ -1,0 +1,21 @@
+extends /layouts/application.pug
+
+block content
+  table.table.table-stripped
+    thead
+      tr
+        th Full Name
+        th Email
+        th Created At
+    tbody
+      if !users
+        tr
+          td= 'John Brown'
+          td= 'john@brown.com'
+          td= '20.04.2018 14:29'    
+      else
+        each user in users
+          tr
+            td= user.fullName
+            td= user.email
+            td= user.createdAt
