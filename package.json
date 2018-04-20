@@ -1,6 +1,6 @@
 {
   "name": "hexlet-js-backend-4",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "hexlet-js-backend-project-4",
   "private": true,
   "bin": {
@@ -32,7 +32,7 @@
   "dependencies": {
     "bootstrap": "^4.1.0",
     "debug": "^3.1.0",
-    "eslint-plugin-jest": "^21.15.0",
+    "eslint-plugin-jest": "^21.15.1",
     "jquery": "^3.3.1",
     "jquery-ujs": "^1.2.2",
     "koa": "^2.5.0",
@@ -41,7 +41,10 @@
     "koa-pug": "^3.0.0-2",
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.2",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.3",
+    "sequelize": "^4.37.6",
+    "sequelize-cli": "^4.0.0",
+    "sqlite3": "^4.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^8.3.0",
