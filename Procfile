@@ -1,1 +1,1 @@
-web: make start-debug
+web: make start
