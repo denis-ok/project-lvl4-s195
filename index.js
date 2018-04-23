@@ -5,20 +5,32 @@ import Router from 'koa-router';
 import koaLogger from 'koa-logger';
 import bodyParser from 'koa-bodyparser';
 import flash from 'koa-flash-simple';
-import session from 'koa-generic-session';
+// import session from 'koa-generic-session';
+import session from 'koa-session';
+
 import path from 'path';
 import addRoutes from './routes';
 
 
 export default () => {
   const app = new Koa();
+  app.keys = ['some secret hurr'];
 
   app.use(koaLogger());
-  app.use(bodyParser());
 
   app.use(session(app));
   app.use(flash());
 
+  app.use(async (ctx, next) => {
+    ctx.state = {
+      flash: ctx.flash,
+      // isSignedIn: () => ctx.session.userId !== undefined,
+    };
+    await next();
+  });
+
+
+  app.use(bodyParser());
   app.use(serve(path.join(__dirname, 'public')));
 
   const router = new Router();
@@ -37,7 +49,7 @@ export default () => {
       { urlFor: (...args) => router.url(...args) }, // build string of path parts. route must exist
     ],
   });
-  // pug.locals = { title: 'test', name: 'denis' };
+  // pug.locals = { title: 'page title' };
   // global object of locals to pass to views (merge with ctx.state)
 
   pug.use(app);

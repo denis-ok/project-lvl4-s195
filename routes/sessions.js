@@ -8,7 +8,23 @@ export default (router) => {
       // const data = {};
       // ctx.render('sessions/new', { formObj: buildFormObj(data) });
       ctx.render('sessions/new', { title: 'Login Page' });
+    })
+    .get('flash', '/session/flash', async (ctx) => {
+      ctx.flash.set('This is flash message from /flash');
+      ctx.body = 'flash added';
+    })
+    .get('sessionAdd', '/session/add', async (ctx) => {
+      let n = ctx.session.views || 0;
+      n += 1;
+      ctx.session.views = n;
+      ctx.body = `${n} views`;
+    })
+    .get('sessionDelete', '/session/delete', async (ctx) => {
+      ctx.session = {};
+      ctx.flash.set('Session deleted');
+      ctx.body = 'Cleaned';
     });
+
   // .post('session', '/session', async (ctx) => {
   //   const { email, password } = ctx.request.body.form;
   //   const user = await User.findOne({
