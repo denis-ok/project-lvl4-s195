@@ -47,6 +47,7 @@
     "koa-static": "^4.0.2",
     "lodash": "^4.17.5",
     "popper.js": "^1.14.3",
+    "rollbar": "^2.3.9",
     "sequelize": "^4.37.6",
     "sequelize-cli": "^4.0.0",
     "sqlite3": "^4.0.0"

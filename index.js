@@ -7,6 +7,7 @@ import bodyParser from 'koa-bodyparser';
 import flash from 'koa-flash-simple';
 // import session from 'koa-generic-session';
 import session from 'koa-session';
+import Rollbar from 'rollbar';
 
 import path from 'path';
 import addRoutes from './routes';
@@ -18,6 +19,14 @@ export default () => {
 
   app.use(koaLogger());
 
+  const rollbar = new Rollbar('31d585b41bd147c3b1d3300644e7bdba');
+
+  app.use(async (ctx, next) => {
+    ctx.rollbar = rollbar;
+    ctx.rollbar.info(`Request to: ${ctx.path}`, { headers: ctx.headers });
+    await next();
+  });
+
   app.use(session(app));
   app.use(flash());
 
@@ -28,7 +37,6 @@ export default () => {
     };
     await next();
   });
-
 
   app.use(bodyParser());
   app.use(serve(path.join(__dirname, 'public')));
@@ -53,6 +61,11 @@ export default () => {
   // global object of locals to pass to views (merge with ctx.state)
 
   pug.use(app);
+
+  app.on('error', (err) => {
+    rollbar.error(`Error obj: ${err}`);
+  });
+
   return app;
 };
 
