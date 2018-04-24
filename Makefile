@@ -7,6 +7,12 @@ start-nodemon:
 start-debug:
 	DEBUG=app:* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./start.js
 
+db-migrate:
+	npm run sequelize -- db:migrate
+
+deploy:
+	git push heroku master
+
 build-webpack:
 	npm run webpack
 

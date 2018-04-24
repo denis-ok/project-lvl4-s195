@@ -1,8 +1,23 @@
 import Sequelize from 'sequelize';
 import { encrypt } from '../utils/secure';
 
+
 const dataTypes = {
-  name: {
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isAlpha: {
+        args: true,
+        msg: 'First or Lastname length must use only Alphabet letters',
+      },
+      len: {
+        args: [2, 16],
+        msg: 'First or Lastname length must be from 2 to 16 letters',
+      },
+    },
+  },
+  lastName: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
@@ -46,27 +61,23 @@ const dataTypes = {
   },
 };
 
-const createUserModel = (sequelize) => {
-  const User = sequelize.define(
-    'User',
-    {
-      firstName: dataTypes.name,
-      lastName: dataTypes.name,
-      email: dataTypes.email,
-      passwordEncrypted: dataTypes.passwordEncrypted,
-      password: dataTypes.password,
-    },
-    {
-      classMethods: {
-        fullName() {
-          return `${this.firstName} ${this.lastName}`;
-        },
-      },
-    },
-  );
+export default (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    firstName: dataTypes.firstName,
+    lastName: dataTypes.lastName,
+    email: dataTypes.email,
+    passwordEncrypted: dataTypes.passwordEncrypted,
+    password: dataTypes.password,
+  });
+
+  User.associate = function(models) {
+    // associations can be defined here
+  };
+
+  User.prototype.getFullname = function(models) {
+    return [this.firstName, this.lastName].join(' ');
+  };
 
   return User;
 };
 
-
-export default createUserModel;
