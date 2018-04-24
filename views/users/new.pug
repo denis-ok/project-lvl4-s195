@@ -12,21 +12,27 @@ block content
       +input(formObj, 'email')
       +input(formObj, 'firstName')
       +input(formObj, 'lastName')
-      +input(formObj, 'password')
+      +input(formObj, 'password', { as: 'password' })
       +button()
 
 
-//- block content
-//-   +formFor(f, { url: urlFor('users'), method: 'post' })
-//-     +input(f, 'email')
-//-     +input(f, 'firstName')
-//-     +input(f, 'lastName')
-//-     +input(f, 'password', { as: 'password' })
-//-     +button(f)
+  //- .container
+   //-   form(action='/users' method= 'post')
+  //-     .form-group
+  //-       label email
+  //-       input(class='form-control' name= 'email' type='text' placeholder='Enter email' value=formObj.object['email'])
+  //-       if formObj.errors['email']
+  //-         .form-control-feedback= formObj.errors['email'].map(({ message }) => message).join('. ')
 
-      .form-group
-        label(for='exampleInputEmail1') Email address
-        input#exampleInputEmail1.form-control(type='email' placeholder='Enter email')
-      .form-group
-        label(for='exampleInputPassword1') Password
-        input#exampleInputPassword1.form-control(type='password' placeholder='Password')
+  //-     .form-group
+  //-       label firstName
+  //-       input(class='form-control' name= 'firstName' type='text' placeholder='Enter firstName')
+
+  //-     .form-group
+  //-       label lastName
+  //-       input(class='form-control' name= 'lastName' type='text' placeholder='Enter lastName')
+
+  //-     .form-group
+  //-       label password
+  //-       input(class='form-control' name= 'password' type='password')
+  //-     button.btn.btn-primary(type="submit") Submit

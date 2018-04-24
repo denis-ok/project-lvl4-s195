@@ -16,6 +16,6 @@ block content
       else
         each user in users
           tr
-            td= user.fullName
+            td= user.getFullname()
             td= user.email
             td= user.createdAt

@@ -8,7 +8,7 @@ block content
         | Just fill forms and click 'Submit'
 
   .container
-    +formFor({ url: 'newSession', method: 'post' })
+    +formFor({ url: urlFor('session'), method: 'post' })
       +input(formObj, 'email')
-      +input(formObj, 'password')
+      +input(formObj, 'password', { as: 'password' })
       +button('Submit')

@@ -1,4 +1,5 @@
-- const getInputName = (formObj, property) => `${formObj.name}[${property}]`
+//- - const getInputName = (formObj, property) => `${formObj.name}[${property}]`
+
 
 mixin formFor(options = {})
   - const method = options.method.toLowerCase();
@@ -11,37 +12,15 @@ mixin formFor(options = {})
 
 
 mixin input(formObj, property, options = { as: 'text' })
-  if !formObj
-    .form-group
-      label= property
-      input(name=property class='form-control' type=text value=``)
-  else
-    - const value = formObj.object[property] === undefined ? '' : formObj.object[property]
-    .form-group(class=(formObj.errors[property] && 'has-danger'))
-      label= property
-      input(name=getInputName(formObj, property) class='form-control' type=options['as'] value=`${value}`)
-      if formObj.errors[property]
+  - const value = formObj.object[property] === undefined ? '' : formObj.object[property]
+  .form-group
+    label= property
+    input(name=property class='form-control' type=options.as value=`${value}`)
+    if formObj.errors[property]
         .form-control-feedback= formObj.errors[property].map(({ message }) => message).join('. ')
+
 
 
 mixin button(value = 'Submit', type = 'submit')
   .form-group
     input(class='btn btn-primary' type=`${type}` value=`${value}`)
-
-
-//- mixin formFor(formObj, options = {})
-//-   - const url = _.get(options, 'url');
-//-   - const method = _.get(options, 'method', 'get').toLowerCase();
-//-   - const isStandart = _.includes(['get', 'post'], method);
-//-   form(action= url method= isStandart ? method : 'post')
-//-     if !isStandart
-//-       input(name='_method' type='hidden' value= method)
-//-     block
-
-//- mixin input(formObj, property, options = { as: 'text' })
-//-   - const value = formObj.object[property] === undefined ? '' : formObj.object[property]
-//-   .form-group(class=(formObj.errors[property] && 'has-danger'))
-//-     label= property
-//-     input(name=getInputName(formObj, property) class='form-control' type=options['as'] value=`${value}`)
-//-     if formObj.errors[property]
-//-       .form-control-feedback= formObj.errors[property].map(({ message }) => message).join('. ')

@@ -1,66 +1,35 @@
-// import buildFormObj from '../lib/formObjectBuilder';
-// import { User } from '../models/user';
-// import _ from 'lodash';
+import debugLib from 'debug';
+import buildFormObj from '../utils/formObjectBuilder';
+import { User } from '../models';
+
+const log = debugLib('app:routes:users.js');
 
 export default (router) => {
+  const title = 'Registration';
+
   router
     .get('users', '/users', async (ctx) => {
-      ctx.render('users');
+      const users = await User.findAll();
+      ctx.render('users', { users, title: 'Users List' });
     })
-    .get('newUser', '/users/new', async (ctx) => {
-      ctx.render('users/new', { title: 'Registration' });
+    .get('newUser', '/users/new', (ctx) => {
+      const user = User.build();
+      const formObj = buildFormObj(user);
+      ctx.render('users/new', { formObj, title });
+    })
+    .post('users', '/users', async (ctx) => {
+      const form = await ctx.request.body;
+      const user = User.build(form);
+      log('Creating User, input in form:\n', form);
+
+      try {
+        await user.save();
+        ctx.flash.set('User has been created');
+        ctx.redirect(router.url('root'));
+      } catch (e) {
+        console.log('error', e);
+        ctx.render('users/new', { formObj: buildFormObj(user, e), title });
+      }
     });
 };
 
-// .get('users', '/users', async (ctx) => {
-//   const users = await User.findAll(); // get all users from db model
-//   ctx.render('users', { users });
-// })
-// .get('newUser', '/users/new', (ctx) => {
-//   const user = User.build();  // create empty user model object instance for db (no save)
-//   ctx.render('users/new', { f: buildFormObj(user) }); // pass object to
-// })
-// .post('users', '/users', async (ctx) => {
-//   const form = ctx.request.body.form;
-//   const user = User.build(form);
-//   try {
-//     await user.save();
-//     ctx.flash.set('User has been created');
-//     ctx.redirect(router.url('root'));
-//   } catch (e) {
-//     ctx.render('users/new', { f: buildFormObj(user, e) });
-//   }
-// });
-
-// const errors = [{
-//   message: 'First or Lastname length must use only Alphabet letters',
-//   type: 'Validation error',
-//   path: 'firstName',
-//   value: '',
-// },
-// {
-//   message: 'First or Lastname length must be from 2 to 16 letters',
-//   type: 'Validation error',
-//   path: 'firstName',
-//   value: '',
-// },
-// {
-//   message: 'First or Lastname length must use only Alphabet letters',
-//   type: 'Validation error',
-//   path: 'lastName',
-//   value: '',
-// },
-// {
-//   message: 'First or Lastname length must be from 2 to 16 letters',
-//   type: 'Validation error',
-//   path: 'lastName',
-//   value: '',
-// }];
-
-// const formObj = {
-//   name: 'form',
-//   object: { firstName: 'denisuka' },
-//   errors: _.groupBy(errors, 'path'),
-// };
-
-// console.log(_.groupBy(errors, 'path'));
