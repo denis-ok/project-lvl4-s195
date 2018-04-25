@@ -10,8 +10,10 @@ import debugLib from 'debug';
 // import methodOverride from 'koa-override';
 // import Rollbar from 'rollbar';
 import path from 'path';
+import dotenv from 'dotenv';
 import addRoutes from './routes';
 
+dotenv.config();
 
 export default () => {
   const log = debugLib('app:index.js');
@@ -83,6 +85,8 @@ export default () => {
     log('Error event:', err);
     // rollbar.error(`Error obj: ${err}`);
   });
+
+  // log('process.env', process.env);
 
   return app;
 };

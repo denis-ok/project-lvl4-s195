@@ -33,6 +33,7 @@
   "dependencies": {
     "bootstrap": "^4.1.0",
     "debug": "^3.1.0",
+    "dotenv": "^5.0.1",
     "eslint-plugin-jest": "^21.15.1",
     "jquery": "^3.3.1",
     "jquery-ujs": "^1.2.2",
@@ -47,7 +48,7 @@
     "koa-router": "^7.4.0",
     "koa-session": "^5.8.1",
     "koa-static": "^4.0.2",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.10",
     "pg": "^7.4.1",
     "popper.js": "^1.14.3",
     "rollbar": "^2.3.9",
