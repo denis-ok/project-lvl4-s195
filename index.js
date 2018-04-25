@@ -8,29 +8,39 @@ import flash from 'koa-flash-simple';
 import session from 'koa-session';
 import debugLib from 'debug';
 // import methodOverride from 'koa-override';
-// import Rollbar from 'rollbar';
+import Rollbar from 'rollbar';
 import path from 'path';
 import dotenv from 'dotenv';
 import addRoutes from './routes';
 
-dotenv.config();
 
 export default () => {
-  const log = debugLib('app:index.js');
-  log('Starting app...');
+  dotenv.config();
+  const env = process.env.NODE_ENV || 'development';
+
+  const debugLog = debugLib('app:index.js');
+  debugLog('Starting app, environment:', env);
 
   const app = new Koa();
   app.keys = ['some secret hurr'];
 
   app.use(koaLogger());
 
-  // const rollbar = new Rollbar('31d585b41bd147c3b1d3300644e7bdba');
+  const rollbar = new Rollbar({
+    accessToken: process.env.ROLLBAR_ID,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  });
 
-  // app.use(async (ctx, next) => {
-  //   ctx.rollbar = rollbar;
-  //   ctx.rollbar.info(`Request to: ${ctx.path}`, { headers: ctx.headers });
-  //   await next();
-  // });
+  app.use(async (ctx, next) => {
+    try {
+      await next();
+    } catch (err) {
+      debugLog(err, ctx.request);
+      rollbar.error(err, ctx.request);
+      console.error(err, ctx.request);
+    }
+  });
 
   app.use(session(app));
   app.use(flash());
@@ -44,25 +54,12 @@ export default () => {
   });
 
   app.use(bodyParser());
-
-  // app.use(methodOverride({ allowedMethods: ['DELETE', 'POST'] }));
-
   app.use(serve(path.join(__dirname, 'public')));
-
 
   const router = new Router();
   addRoutes(router);
   app.use(router.allowedMethods());
   app.use(router.routes());
-
-  // app.use(async (ctx, next) => {
-  //   log('ctx.body:', ctx.body);
-  //   log('ctx.request.body:', ctx.request.body);
-  //   log('ctx.method:', ctx.method);
-  //   log('ctx.headers:', ctx.headers);
-  //   log('ctx.request.method:', ctx.request.method);
-  //   await next();
-  // });
 
   const pug = new Pug({
     viewPath: path.join(__dirname, 'views'),
@@ -75,19 +72,12 @@ export default () => {
       { urlFor: (...args) => router.url(...args) }, // build string of path parts. route must exist
     ],
   });
-  // pug.locals = { title: 'page title' };
-  // global object of locals to pass to views (merge with ctx.state)
-
   pug.use(app);
-
-  app.on('error', (err) => {
-    console.error(err);
-    log('Error event:', err);
-    // rollbar.error(`Error obj: ${err}`);
-  });
-
-  // log('process.env', process.env);
 
   return app;
 };
 
+// app.use(methodOverride({ allowedMethods: ['DELETE', 'POST'] }));
+
+// pug.locals = { title: 'page title' };
+// its global object of locals to pass to views (merge with ctx.state)
