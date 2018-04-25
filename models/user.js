@@ -46,10 +46,10 @@ const dataTypes = {
     },
   },
   password: {
-    type: Sequelize.VIRTUAL,
+    type: Sequelize.STRING,
     set(value) {
       this.setDataValue('passwordEncrypted', encrypt(value));
-      this.setDataValue('password', value);
+      this.setDataValue('password', null);
       // return value;
     },
     validate: {

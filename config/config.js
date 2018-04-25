@@ -1,4 +1,4 @@
-const dotenv = require('dotenv').config();
+// const dotenv = require('dotenv').config();
 
 const config = {
   development: {
@@ -11,13 +11,12 @@ const config = {
     dialect: 'sqlite',
   },
   production: {
-    username: process.env.HEROKU_DB_USERNAME,
-    password: process.env.HEROKU_DB_PASSWORD,
-    database: process.env.HEROKU_DB_DBNAME,
-    host: process.env.HEROKU_DB_HOST,
-    dialect: 'postgres',
+    use_env_variable: 'DATABASE_URL',
+    dialectOptions: {
+      // native: true,
+      ssl: true,
+    },
   },
 };
 
 module.exports = config;
-
