@@ -48,6 +48,7 @@
     "koa-session": "^5.8.1",
     "koa-static": "^4.0.2",
     "lodash": "^4.17.5",
+    "pg": "^7.4.1",
     "popper.js": "^1.14.3",
     "rollbar": "^2.3.9",
     "sequelize": "^4.37.6",
