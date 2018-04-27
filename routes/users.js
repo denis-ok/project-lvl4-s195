@@ -2,7 +2,7 @@ import debugLib from 'debug';
 import buildFormObj from '../utils/formObjectBuilder';
 import { User } from '../models';
 
-const log = debugLib('app:routes:users.js');
+const debugLog = debugLib('app:routes:users.js');
 
 export default (router) => {
   const title = 'Registration';
@@ -20,14 +20,14 @@ export default (router) => {
     .post('users', '/users', async (ctx) => {
       const form = await ctx.request.body;
       const user = User.build(form);
-      log('Creating User, input in form:\n', form);
+      debugLog('Creating User, input in form:\n', form);
 
       try {
         await user.save();
         ctx.flash.set('User has been created');
         ctx.redirect(router.url('root'));
       } catch (e) {
-        console.log('error', e);
+        debugLog('error', e);
         ctx.render('users/new', { formObj: buildFormObj(user, e), title });
       }
     });

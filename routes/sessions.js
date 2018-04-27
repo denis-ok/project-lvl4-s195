@@ -3,7 +3,7 @@ import buildFormObj from '../utils/formObjectBuilder';
 import { encrypt } from '../utils/secure';
 import { User } from '../models';
 
-const log = debugLib('app:routes:sessions.js');
+const debugLog = debugLib('app:routes:sessions.js');
 
 
 export default (router) => {
@@ -20,12 +20,12 @@ export default (router) => {
         },
       });
 
-      log(user ? `User with email: '${email}' found in DB` : `User with email: ${email} NOT exist in DB`);
+      debugLog(user ? `User with email: '${email}' found in DB` : `User with email: ${email} NOT exist in DB`);
 
       if (user && user.passwordEncrypted === encrypt(password)) {
         ctx.session.userId = user.id;
-        log('Correct password, redirecting to root');
-        log('ctx.session:', ctx.session);
+        debugLog('Correct password, redirecting to root');
+        debugLog('ctx.session:', ctx.session);
 
         ctx.flash.set(`Welcome, ${user.getFullname()}`);
         ctx.redirect(router.url('root'));
@@ -38,7 +38,7 @@ export default (router) => {
     })
     .get('sessionDelete', '/session/delete', async (ctx) => {
       ctx.session = {};
-      ctx.flash.set('Session deleted');
+      ctx.flash.set('Session Deleted');
       ctx.redirect(router.url('root'));
     });
 };
