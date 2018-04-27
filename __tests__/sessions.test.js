@@ -41,7 +41,7 @@ describe('requests', () => {
     const res2 = await request(server).get('/').set('cookie', prepareCookies(sessionCookieStr));
     expect(res2.text).toEqual(expect.stringContaining('Sign Out'));
 
-    const res3 = await request(server).get('/session/delete');
+    const res3 = await request(server).delete('/session');
     const delSessionCookieStr = res3.headers['set-cookie'][0];
 
     const res4 = await request(server).get('/').set('cookie', prepareCookies(delSessionCookieStr));

@@ -36,13 +36,18 @@ export default (router) => {
       ctx.redirect(router.url('newSession'));
       // ctx.render('sessions/new', { formObj: buildFormObj({}), title: 'Login Page' });
     })
-    .get('sessionDelete', '/session/delete', async (ctx) => {
+    .delete('sessionDelete', '/session', async (ctx) => {
       ctx.session = {};
       ctx.flash.set('Session Deleted');
       ctx.redirect(router.url('root'));
     });
 };
 
+// .delete('sessionDeleteUJS', '/session/delete1', async (ctx) => {
+//   ctx.session = {};
+//   ctx.flash.set('Session Deleted !!!!!!');
+//   ctx.redirect(router.url('root'));
+// });
 
 // .delete('session', '/session', (ctx) => {
 //   log('Deleting Session');

@@ -51,6 +51,7 @@ export default () => ({
     }),
   ],
   optimization: {
+    // minimize: false,
     splitChunks: {
       cacheGroups: {
         commons: {
@@ -63,5 +64,6 @@ export default () => ({
   },
   mode: 'development',
 });
-console.log(Object.keys(webpack.optimize));
+
+// console.log(Object.keys(webpack.optimize));
 
