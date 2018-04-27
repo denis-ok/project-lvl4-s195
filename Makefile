@@ -10,6 +10,9 @@ start-debug:
 start-debug-index:
 	DEBUG=app:index* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./start.js
 
+start-debug-users:
+	DEBUG=app:users* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./start.js
+
 start-heroku:
 	make db-migrate
 	make start
