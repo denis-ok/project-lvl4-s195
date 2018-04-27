@@ -1,11 +1,13 @@
 import request from 'supertest';
-
 import app from '..';
+
+// console.log('environment:', process.env.NODE_ENV);
+
 
 describe('requests', () => {
   let server;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = app().listen();
   });
 
