@@ -12,7 +12,7 @@ mixin formFor(options = {})
 
 
 mixin input(formObj, property, options = { as: 'text' })
-  - const value = formObj.object[property] === undefined ? '' : formObj.object[property]
+  - const value = formObj.object[property] === undefined || property === 'password' ? '' : formObj.object[property]
   .form-group
     label= property
     input(name=property class='form-control' type=options.as value=`${value}`)

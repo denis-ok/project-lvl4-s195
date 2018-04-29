@@ -20,7 +20,8 @@ export default (router) => {
         },
       });
 
-      debugLog(user ? `User with email: '${email}' found in DB` : `User with email: ${email} NOT exist in DB`);
+      // debugLog(user ? `User email: '${email}' found in DB` :
+      //   `User email: ${email} NOT exist in DB`);
 
       if (user && user.passwordEncrypted === encrypt(password)) {
         ctx.session.userId = user.id;
@@ -34,7 +35,6 @@ export default (router) => {
 
       ctx.flash.set('email or password were wrong');
       ctx.redirect(router.url('newSession'));
-      // ctx.render('sessions/new', { formObj: buildFormObj({}), title: 'Login Page' });
     })
     .delete('sessionDelete', '/session', async (ctx) => {
       ctx.session = {};
@@ -43,24 +43,3 @@ export default (router) => {
     });
 };
 
-// .delete('sessionDeleteUJS', '/session/delete1', async (ctx) => {
-//   ctx.session = {};
-//   ctx.flash.set('Session Deleted !!!!!!');
-//   ctx.redirect(router.url('root'));
-// });
-
-// .delete('session', '/session', (ctx) => {
-//   log('Deleting Session');
-//   ctx.session = {};
-//   ctx.redirect(router.url('root'));
-// })
-// .get('sessionAdd', '/session/add', async (ctx) => {
-//   let n = ctx.session.views || 0;
-//   n += 1;
-//   ctx.session.views = n;
-//   ctx.body = `${n} views`;
-// })
-// .get('flash', '/session/flash', async (ctx) => {
-//   ctx.flash.set('This is flash message from /flash');
-//   ctx.body = 'flash added';
-// })

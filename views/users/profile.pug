@@ -3,4 +3,9 @@ extends /layouts/application.pug
 block content
   .container
     .py-4.text-center
-      h2 Your Profile
+      h2= user.getFullname()
+      p.h6= `Registration Date: ${user.createdAt}`
+
+  .container
+    .py-4.text-center
+      h2 Tasks Created

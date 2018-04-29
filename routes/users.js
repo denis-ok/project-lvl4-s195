@@ -14,11 +14,22 @@ export default (router) => {
     })
     .get('newUser', '/users/new', (ctx) => {
       const user = User.build();
-      const formObj = buildFormObj(user);
-      ctx.render('users/new', { formObj, title });
+      ctx.render('users/new', { formObj: buildFormObj(user), title });
     })
-    .get('userProfile', '/users/profile', (ctx) => {
-      ctx.render('users/profile');
+    .get('userProfile', '/users/profile/:id', async (ctx) => {
+      const { id } = ctx.params;
+      const user = await User.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!user) {
+        ctx.flash.set('User not exist!');
+        ctx.redirect(router.url('root'));
+        return;
+      }
+      ctx.render('users/profile', { user, title: user.getFullname() });
     })
     .get('editUser', '/users/edit', async (ctx) => {
       const { userId } = ctx.session;
@@ -33,17 +44,11 @@ export default (router) => {
           id: userId,
         },
       });
-
-      const formObj = buildFormObj(user);
-      delete formObj.object.password;
-      delete formObj.object.passwordEncrypted;
-
-      ctx.render('users/edit', { formObj, title: 'Edit Profile' });
+      ctx.render('users/edit', { formObj: buildFormObj(user), title: 'Edit Profile' });
     })
     .post('users', '/users', async (ctx) => {
       const form = await ctx.request.body;
       const user = User.build(form);
-
       try {
         await user.save();
         ctx.flash.set('User has been created');
@@ -68,8 +73,6 @@ export default (router) => {
       });
 
       const form = await ctx.request.body;
-      debugLog('\form:\n', form);
-
       try {
         await user.update(form);
         ctx.flash.set('Your profile has been updated');

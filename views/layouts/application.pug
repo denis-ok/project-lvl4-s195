@@ -11,9 +11,10 @@ html(lang="en")
   body
     include navBar.pug
 
-    .container
-      - const msg = flash.get()
-      if msg
+
+  - const msg = flash.get()
+    if msg
+      .container
         .alert.alert-info.m-3= msg
 
     block content
