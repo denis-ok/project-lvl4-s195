@@ -15,13 +15,14 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
+        unique: true,
         type: Sequelize.STRING
       },
       passwordEncrypted: {
         type: Sequelize.STRING
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.VIRTUAL
       },
       createdAt: {
         allowNull: false,

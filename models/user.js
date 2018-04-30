@@ -3,6 +3,20 @@ import { encrypt } from '../utils/secure';
 
 
 const dataTypes = {
+  email: {
+    type: Sequelize.STRING,
+    unique: {
+      args: true,
+      msg: 'Sorry, user with this email already registered'
+    },
+    allowNull: false,
+    validate: {
+      isEmail: {
+        args: true,
+        msg: 'Email you have entered is not valid'
+      },
+    },
+  },
   firstName: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -31,14 +45,6 @@ const dataTypes = {
       },
     },
   },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true,
-    },
-  },
   passwordEncrypted: {
     type: Sequelize.STRING,
     validate: {
@@ -46,16 +52,16 @@ const dataTypes = {
     },
   },
   password: {
-    type: Sequelize.STRING,
+    type: Sequelize.VIRTUAL,
     set(value) {
       this.setDataValue('passwordEncrypted', encrypt(value));
-      this.setDataValue('password', null);
+      this.setDataValue('password', value);
       // return value;
     },
     validate: {
       len: {
         args: [6, +Infinity],
-        msg: 'Please use a longer password',
+        msg: 'Please use a longer password (6 or more symbols)',
       },
     },
   },
