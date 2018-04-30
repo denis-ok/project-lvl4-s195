@@ -76,7 +76,7 @@ export default (router) => {
       try {
         await user.update(form);
         ctx.flash.set('Your profile has been updated');
-        ctx.redirect(router.url('root'));
+        ctx.redirect(router.url('editUser'));
       } catch (e) {
         debugLog('error', e);
         ctx.render('users/edit', { formObj: buildFormObj(user, e), title });

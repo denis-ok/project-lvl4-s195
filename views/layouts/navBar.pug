@@ -1,10 +1,10 @@
-nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom
+nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom.p-3.px-md-4
   a.navbar-brand(href='/') Task Manager
   button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
-      li.nav-item.active
+      li.nav-item.px-2
         a.nav-link(href=urlFor('users')) All Users
 
     ul.navbar-nav
@@ -13,6 +13,10 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom
       //- li.nav-item
       //-   a.nav-link(href=urlFor('newUser')) Sign Up
       if isSignedIn()
+        li.nav-item.active.px-2
+          a.btn.btn-outline-primary(href='#') All Tasks
+        li.nav-item.active.px-2
+          a.btn.btn-primary(href='#') Add Task
         li.nav-item.dropdown
           a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
             | Profile
@@ -22,9 +26,9 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom
             .dropdown-divider
             a.dropdown-item(href=urlFor('sessionDelete') data-method='delete' rel='nofollow') Sign Out
       else
-        li.nav-item
+        li.nav-item.px-2
           a.nav-link(href=urlFor('newSession')) Sign In
-        li.nav-item
-          a.nav-link(href=urlFor('newUser')) Sign Up
+        li.nav-item.px-2
+          a.btn.btn-outline-primary(href=urlFor('newUser')) Register
 
 

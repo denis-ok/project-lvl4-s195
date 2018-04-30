@@ -7,7 +7,7 @@ block content
       p.h6
         | Just fill forms and click 'Submit'
 
-  .container
+  .container.col-md-2
     +formFor({ url: urlFor('session'), method: 'post' })
       +input(formObj, 'email')
       +input(formObj, 'password', { as: 'password' })

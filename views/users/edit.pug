@@ -2,15 +2,34 @@ extends /layouts/application.pug
 
 block content
   .container
-    .py-4.text-center
+    .pt-4.pb-5.text-center
       h2 Edit Profile
-      p.h6
-        | Just fill forms and click 'Submit'
+
 
   .container
     +formFor({ url: urlFor('users'), method: 'patch' })
-      +input(formObj, 'email')
-      +input(formObj, 'firstName')
-      +input(formObj, 'lastName')
-      +button()
+      .row
+        .container.col-sm
+          h4 Basic Information
+          hr
+          +input(formObj, 'email')
+          +input(formObj, 'firstName')
+          +input(formObj, 'lastName')
+  
+        .container.col-sm
+          h4 Optional Information
+          hr
+          +input(formObj, 'Favorite Food')
+          .form-group
+            label(for='exampleFormControlSelect1') Pet
+            select#exampleFormControlSelect1.form-control
+              option No Pet
+              option Dog
+              option Cat
+              option Parrot
+              option Mouse
 
+      +button('Save')
+
+
+  

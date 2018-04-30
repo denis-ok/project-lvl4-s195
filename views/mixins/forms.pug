@@ -22,5 +22,5 @@ mixin input(formObj, property, options = { as: 'text' })
 
 
 mixin button(value = 'Submit', type = 'submit')
-  .form-group
-    input(class='btn btn-primary' type=`${type}` value=`${value}`)
+  .form-group.pt-3
+    input(class='btn btn-primary btn-block' type=`${type}` value=`${value}`)
