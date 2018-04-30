@@ -8,13 +8,9 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom.p-3.px-md-4
         a.nav-link(href=urlFor('users')) All Users
 
     ul.navbar-nav
-      //- li.nav-item
-      //-   a.nav-link(href=urlFor('newSession')) Sign In
-      //- li.nav-item
-      //-   a.nav-link(href=urlFor('newUser')) Sign Up
       if isSignedIn()
         li.nav-item.active.px-2
-          a.btn.btn-outline-primary(href='#') All Tasks
+          a.btn.btn-outline-primary(href=urlFor('tasks')) All Tasks
         li.nav-item.active.px-2
           a.btn.btn-primary(href='#') Add Task
         li.nav-item.dropdown

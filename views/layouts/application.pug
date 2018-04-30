@@ -1,4 +1,5 @@
 include /mixins/forms.pug
+- const msg = flash.get()
 
 doctype html
 html(lang="en")
@@ -10,11 +11,7 @@ html(lang="en")
     script(src='/assets/vendors.app.js')
   body
     include navBar.pug
-
-
-  - const msg = flash.get()
     if msg
       .container
         .alert.alert-info.m-3= msg
-
     block content
