@@ -67,7 +67,6 @@ describe('requests', () => {
     expect(user.firstName).toEqual(form.firstName);
     expect(user.lastName).toEqual(form.lastName);
     expect(user.email).toEqual(form.email);
-    expect(user.password).toEqual(null);
   });
 
   it('POST, Should NOT Create Same Users In Database', async () => {
