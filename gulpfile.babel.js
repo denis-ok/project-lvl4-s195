@@ -2,8 +2,8 @@ import 'babel-polyfill';
 
 import gulp from 'gulp';
 import repl from 'repl';
-import container from './container';
-import getServer from '.';
+import container from './src/container';
+import getServer from './src';
 
 
 gulp.task('console', () => {

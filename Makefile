@@ -1,17 +1,17 @@
 start:
-	npm run babel-node -- ./start.js
+	npm run babel-node -- ./src/start.js
 
 start-nodemon:
-	npm run nodemon -- --exec babel-node ./start.js
+	npm run nodemon -- --exec babel-node ./src/start.js
 
 start-debug:
-	DEBUG=app:* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./start.js
+	DEBUG=app:* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./src/start.js
 
 start-debug-index:
-	DEBUG=app:index* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./start.js
+	DEBUG=app:index* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./src/start.js
 
 start-debug-users:
-	DEBUG=app:users* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./start.js
+	DEBUG=app:users* npm run nodemon -- --watch . --ext '.js, .pug' --exec babel-node ./src/start.js
 
 start-heroku:
 	make db-migrate

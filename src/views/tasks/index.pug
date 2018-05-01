@@ -1,0 +1,54 @@
+extends /layouts/application.pug
+
+block content
+  .text-center
+    h4.my-3 Filtering
+    .container.text-left
+      form(action='/tasks/' method='get')
+        .card-group
+          .card
+            .card-body
+              label Email contains:
+              input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='email')
+          .card
+            .card-body
+              label Title contains:
+              input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='title')
+          .card
+            .card-body
+              label Status:
+              input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='status')
+          .card
+            .card-body
+              label Tags:
+              input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='tags')
+          .card
+            .card-body
+              label Assigned To:
+              input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='assigned')
+        button.btn.btn-block.btn-outline-primary.mt-3.mb-5(type='submit') Search
+
+
+  .table-responsive
+    table.table.table-stripped
+      thead
+        tr
+          th Title
+          th Status
+          th Creator
+          th Tags
+          th Assigned to
+      tbody
+        if !tasks
+          tr
+            td= 'Create task model'
+            td= 'new'
+            td= 'Denis'
+            td= 'database, model'
+            td= 'Denis Strelkov'
+        else
+          each task in tasks
+            tr
+              td= user.getFullname()
+              td= user.email
+              td= user.createdAt

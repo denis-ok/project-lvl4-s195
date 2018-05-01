@@ -1,7 +1,7 @@
 import request from 'supertest';
 // import faker from 'faker';
-import { User } from '../models';
-import app from '..';
+import { User } from '../src/models';
+import app from '../src';
 
 const form = {
   email: 'john@gmail.com',
