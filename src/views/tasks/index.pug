@@ -36,19 +36,21 @@ block content
           th Title
           th Status
           th Creator
-          th Tags
           th Assigned to
+          th Tags
       tbody
         if !tasks
           tr
-            td= 'Create task model'
-            td= 'new'
-            td= 'Denis'
-            td= 'database, model'
-            td= 'Denis Strelkov'
+            td= 'Dummy title'
+            td= 'Dummy status'
+            td= 'Dummy creator'
+            td= 'Dummy worker'
+            td= 'Dummy tag1, Dummy tag2'
         else
           each task in tasks
             tr
-              td= user.getFullname()
-              td= user.email
-              td= user.createdAt
+              td= task.name
+              td= task.status
+              td= task.creator
+              td= task.assignedTo
+              td= task.tags
