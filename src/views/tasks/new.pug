@@ -9,29 +9,7 @@ block content
     +formFor({ url: urlFor('tasks'), method: 'post' })
       +input(formObj, 'name')
       +input(formObj, 'description')
-      +input(formObj, 'status')
       +input(formObj, 'assignedTo')
       +input(formObj, 'tags')
       +button()
 
-
-  //- .container
-   //-   form(action='/users' method= 'post')
-  //-     .form-group
-  //-       label email
-  //-       input(class='form-control' name= 'email' type='text' placeholder='Enter email' value=formObj.object['email'])
-  //-       if formObj.errors['email']
-  //-         .form-control-feedback= formObj.errors['email'].map(({ message }) => message).join('. ')
-
-  //-     .form-group
-  //-       label firstName
-  //-       input(class='form-control' name= 'firstName' type='text' placeholder='Enter firstName')
-
-  //-     .form-group
-  //-       label lastName
-  //-       input(class='form-control' name= 'lastName' type='text' placeholder='Enter lastName')
-
-  //-     .form-group
-  //-       label password
-  //-       input(class='form-control' name= 'password' type='password')
-  //-     button.btn.btn-primary(type="submit") Submit

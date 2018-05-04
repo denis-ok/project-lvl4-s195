@@ -49,7 +49,7 @@ export default () => {
     ctx.state = {
       flash: ctx.flash,
       isSignedIn: () => ctx.session.userId !== undefined,
-      getId: () => ctx.session.userId,
+      getUserId: () => ctx.session.userId,
     };
     await next();
   });
@@ -58,12 +58,12 @@ export default () => {
   app.use(serve(path.join(__dirname, 'public')));
   app.use(methodOverride());
 
-  app.use(async (ctx, next) => {
-    debugLog('\nctx.request.headers:\n', ctx.request.headers);
-    debugLog('\nctx.body:\n', ctx.body);
-    debugLog('\nctx.session:\n', ctx.session);
-    await next();
-  });
+  // app.use(async (ctx, next) => {
+  //   debugLog('\nctx.request.headers:\n', ctx.request.headers);
+  //   debugLog('\nctx.body:\n', ctx.body);
+  //   debugLog('\nctx.session:\n', ctx.session);
+  //   await next();
+  // });
 
   const router = new Router();
   addRoutes(router);

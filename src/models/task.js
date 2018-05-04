@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     status: {
       type: DataTypes.STRING,
-      defaultValue: 'new',
+      // defaultValue: 'new',
       validate: {
         notEmpty: {
           args: true,
