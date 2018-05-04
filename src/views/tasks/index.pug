@@ -28,29 +28,34 @@ block content
               input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='assigned')
         button.btn.btn-block.btn-outline-primary.mt-3.mb-5(type='submit') Search
 
-
-  .table-responsive
-    table.table.table-stripped
-      thead
-        tr
-          th Title
-          th Status
-          th Creator
-          th Assigned to
-          th Tags
-      tbody
-        if !tasks
+  .container
+    .table-responsive
+      table.table.table-stripped
+        thead
           tr
-            td= 'Dummy title'
-            td= 'Dummy status'
-            td= 'Dummy creator'
-            td= 'Dummy worker'
-            td= 'Dummy tag1, Dummy tag2'
-        else
-          each task in tasks
+            th Title
+            th Status
+            th Creator
+            th Assigned to
+            th Tags
+            th Actions
+        tbody
+          if !tasks
             tr
-              td= task.name
-              td= task.status
-              td= task.creator
-              td= task.assignedTo
-              td= task.tags
+              td= 'Dummy title'
+              td= 'Dummy status'
+              td= 'Dummy creator'
+              td= 'Dummy worker'
+              td= 'Dummy tag1, Dummy tag2'
+          else
+            each task in tasks
+              tr
+                td= task.name
+                td= task.status
+                td= task.creator
+                td= task.assignedTo
+                td= task.tags
+                td
+                  a.btn.btn-success.btn-sm.m-1(href=`/tasks/${task.id}`) View
+                  a.btn.btn-primary.btn-sm.m-1(href=`/tasks/${task.id}/edit`) Edit
+                  //- a.btn.btn-danger.btn-sm.m-1(href=`/tasks/${task.id}/delete`) Del
