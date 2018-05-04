@@ -13,7 +13,7 @@ const f = async () => {
     firstName: 'Denis',
     lastName: 'Strelkov',
     email: 'strelkov.d.d@mail.ru',
-    password: process.env.TM_PASSWORD,
+    password: process.env.TM_PASSWORD || 'qqqqqq',
   });
 
   await models.TaskStatus.bulkCreate([
