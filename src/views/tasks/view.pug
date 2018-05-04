@@ -1,0 +1,39 @@
+extends /layouts/application.pug
+
+block content
+  .container
+    .py-4.text-center
+      h4= task.name
+
+  .text-center
+    .container.text-center
+      .card-group
+        .card
+          .card-header Creator
+          .card-body= task.creator
+        .card
+          .card-header Status
+          .card-body= task.status
+        .card
+          .card-header Tags
+          .card-body= task.tags
+        .card
+          .card-header Workers
+          .card-body= task.assignedTo
+      .card-group.mt-4
+        .card
+          .card-header Created At
+          .card-body= task.createdAt
+        .card
+          .card-header Updated At
+          .card-body= task.updatedAt
+      .card.mt-4
+        .card-header Description
+        .card-body= task.description
+      .card.mt-4
+        .card-header Actions
+        .card-body
+          a.btn.btn-success.m-1(href=`/tasks/${task.id}`) View
+          a.btn.btn-primary.m-1(href=`/tasks/${task.id}/edit`) Edit
+
+

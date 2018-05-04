@@ -45,6 +45,14 @@ export default (router) => {
     })
 
 
+    .get('viewTask', '/tasks/:id', checkAuthMw, isExistTaskMw, async (ctx) => {
+      const { id } = ctx.params;
+      const task = await Task.findById(id);
+
+      ctx.render('tasks/view', { task, title: `Task: ${task.name}` });
+    })
+
+
     .get('editTask', '/tasks/:id/edit', checkAuthMw, isExistTaskMw, async (ctx) => {
       const { id } = ctx.params;
       const task = await Task.findById(id);
@@ -97,7 +105,7 @@ export default (router) => {
       try {
         await task.update(form);
         ctx.flash.set('Task has been updated');
-        ctx.redirect(router.url('tasks'));
+        ctx.redirect(router.url('viewTask', { id }));
       } catch (e) {
         debugLog('\nERROR:\n', e);
         ctx.render('tasks/edit', { statusList, formObj: buildFormObj(task, e), title: 'Edit Task (errors)' });
