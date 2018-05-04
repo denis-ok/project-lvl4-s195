@@ -1,0 +1,22 @@
+extends /layouts/application.pug
+
+block content
+  - const taskId = formObj.object.id;
+  .container
+    .py-4.text-center
+      h2 Edit Task
+
+  .container.col-md-2
+    +formFor({ url: urlFor('patchTask', taskId), method: 'patch' })
+      +input(formObj, 'name')
+      +input(formObj, 'description')
+      +input(formObj, 'assignedTo')
+      +input(formObj, 'tags')
+      if statusList
+        .form-group
+          label Status
+          select.form-control(name='status')
+            each status in statusList          
+              option=status.name
+      +button()
+
