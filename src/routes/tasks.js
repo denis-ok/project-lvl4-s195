@@ -1,6 +1,7 @@
 import debugLib from 'debug';
 import buildFormObj from '../utils/formObjectBuilder';
-import { Task, TaskStatus } from '../models';
+import setTagsToTask from '../utils/setTagsToTask';
+import { Task, TaskStatus, Tag } from '../models';
 
 const debugLog = debugLib('app:routes:tasks.js');
 
@@ -27,6 +28,7 @@ const isExistTask = router => async (ctx, next) => {
   ctx.redirect(router.url('tasks'));
 };
 
+const normalizeTags = tagsStr => tagsStr.split(/\W/).filter(el => el !== '').map(tag => tag.toLowerCase());
 
 export default (router) => {
   const checkAuthMw = checkAuth(router, 'You must be logged in to add task');
@@ -48,8 +50,8 @@ export default (router) => {
     .get('viewTask', '/tasks/:id', checkAuthMw, isExistTaskMw, async (ctx) => {
       const { id } = ctx.params;
       const task = await Task.findById(id);
-
-      ctx.render('tasks/view', { task, title: `Task: ${task.name}` });
+      const tags = await task.getTags();
+      ctx.render('tasks/view', { task, tags, title: `Task: ${task.name}` });
     })
 
 
@@ -66,16 +68,20 @@ export default (router) => {
       debugLog('\nctx.request.body:\n', ctx.request.body);
       debugLog('\nctx.session:\n', ctx.session);
 
-      const { userId } = ctx.session;
+      const { userId } = await ctx.session;
       const form = await ctx.request.body;
+      const tagNameArr = normalizeTags(form.tags);
+
       form.creator = userId;
-      form.status = 'New';
 
       const task = await Task.build(form);
       const statusList = await TaskStatus.findAll();
 
       try {
         await task.save();
+        await setTagsToTask(Tag, tagNameArr, task);
+        await task.update({ tags: tagNameArr.join(', ') });
+
         ctx.flash.set('Task has been created');
         ctx.redirect(router.url('tasks'));
       } catch (e) {
@@ -95,6 +101,8 @@ export default (router) => {
         },
       });
 
+      const tagNameArr = normalizeTags(form.tags);
+
       debugLog('PATCH Route..........');
       debugLog('\nid:\n', id);
       debugLog('\ntask:\n', task);
@@ -104,6 +112,8 @@ export default (router) => {
 
       try {
         await task.update(form);
+        await setTagsToTask(Tag, tagNameArr, task);
+        await task.update({ tags: tagNameArr.join(', ') });
         ctx.flash.set('Task has been updated');
         ctx.redirect(router.url('viewTask', { id }));
       } catch (e) {

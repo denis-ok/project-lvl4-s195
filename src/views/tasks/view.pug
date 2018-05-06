@@ -16,7 +16,8 @@ block content
           .card-body= task.status
         .card
           .card-header Tags
-          .card-body= task.tags
+          .card-body
+            p= tags.map(t => t.name).join(', ')
         .card
           .card-header Workers
           .card-body= task.assignedTo

@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
+    tags: {
+      type: DataTypes.STRING,
+      defaultValue: '',
+    },
     creator: DataTypes.STRING,
     assignedTo: {
       type: DataTypes.STRING,
