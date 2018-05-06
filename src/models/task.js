@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     description: DataTypes.STRING,
-    status: {
+    statusId: {
       type: DataTypes.STRING,
-      // defaultValue: 'new',
+      defaultValue: '1',
       validate: {
         notEmpty: {
           args: true,
@@ -30,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'no worker',
     },
-    tags: DataTypes.STRING
   }, {});
 
   Task.associate = function(models) {
