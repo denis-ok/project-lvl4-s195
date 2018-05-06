@@ -1,33 +1,34 @@
 import dotenv from 'dotenv';
-import models from './models';
+import { User, Task, TaskStatus, TaskTag, Tag } from './models';
 
 const f = async () => {
   dotenv.config();
 
-  await models.User.sync({ force: true });
-  await models.Task.sync({ force: true });
-  await models.TaskStatus.sync({ force: true });
-  await models.Tag.sync({ force: true });
+  Task.belongsToMany(Tag, { through: 'TaskTag' });
+  Tag.belongsToMany(Task, { through: 'TaskTag' });
 
-  await models.User.create({
+  await User.sync({ force: true });
+  await Task.sync({ force: true });
+  await TaskStatus.sync({ force: true });
+  await Tag.sync({ force: true });
+  await TaskTag.sync({ force: true });
+
+  await User.create({
     firstName: 'Denis',
     lastName: 'Strelkov',
     email: 'strelkov.d.d@mail.ru',
     password: process.env.TM_PASSWORD || 'qqqqqq',
   });
 
-  await models.TaskStatus.bulkCreate([
+  await TaskStatus.bulkCreate([
     { name: 'New' },
     { name: 'In progress' },
     { name: 'Finished' },
   ]);
 
-  await models.Task.create({
+  await Task.create({
     name: 'First Task Title',
     description: 'This is task description. Need to do many things.',
-    assignedTo: 'no assignment',
-    tags: 'tag1, tag2',
-    status: 'New',
     creator: '1',
   });
 };
