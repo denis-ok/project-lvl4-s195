@@ -1,0 +1,49 @@
+extends /layouts/application.pug
+
+block content
+  .container.col-md-4.mt-4
+    .card
+      .card-header.text-center Add New Status
+      .card-body
+        +formFor({ url: urlFor('taskStatuses'), method: 'post' })
+          +input(formObj, 'name')
+          +button()
+
+  .container.mt-5
+    .py-4.text-center
+      h2 Statuses List
+    if e
+      h2='ERRORS'
+    .table-responsive
+      table.table.table-stripped
+        thead
+          tr
+            th Id
+            th Name
+            th Actions
+        tbody
+          if !statuses
+            tr
+              td= 'Dummy Id'
+              td= 'Dummy Name'
+              td
+                a.btn.btn-primary.btn-sm.m-1(href='#') Edit
+                a.btn.btn-danger.btn-sm.m-1(href='#') Del
+          else
+            each status in statuses
+              tr
+                td= status.id
+                td= status.name
+                td
+                  .dropdown.d-inline.dropright
+                    button.btn.btn-sm.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown')
+                      | Edit
+                    .dropdown-menu.p-2.text-right
+                      +formFor({ url: urlFor('patchTaskStatus', status.id), method: 'patch' })
+                        input.form-control.mt-1(name='name' type='text' value = status.name autocomplete='off')
+                        button.btn.btn-sm.btn-primary.my-2(type='submit') Save
+                  if (status.id > 2)
+                    a.btn.btn-danger.btn-sm.m-1(href=urlFor('deleteTaskStatus', status.id) data-method='delete') Del
+
+
+

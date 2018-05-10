@@ -15,15 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     description: DataTypes.STRING,
-    statusId: {
+    TaskStatusId: {
       type: DataTypes.STRING,
-      defaultValue: '1',
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: 'You must choose status',
-        },
-      },
+      defaultValue: 2
     },
     tags: {
       type: DataTypes.STRING,

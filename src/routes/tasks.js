@@ -2,18 +2,9 @@ import debugLib from 'debug';
 import buildFormObj from '../utils/formObjectBuilder';
 import setTagsToTask from '../utils/setTagsToTask';
 import { Task, TaskStatus, Tag } from '../models';
+import checkAuth from '../utils/middlewares';
 
 const debugLog = debugLib('app:routes:tasks.js');
-
-const checkAuth = (router, msg = 'You must be logged in') => async (ctx, next) => {
-  if (ctx.state.isSignedIn()) {
-    await next();
-    return;
-  }
-
-  ctx.flash.set(msg);
-  ctx.redirect(router.url('newSession'));
-};
 
 const isExistTask = router => async (ctx, next) => {
   const { id } = ctx.params;
@@ -28,15 +19,24 @@ const isExistTask = router => async (ctx, next) => {
   ctx.redirect(router.url('tasks'));
 };
 
+const attachStatusName = async (task) => {
+  const status = await task.getTaskStatus();
+  const newTask = task;
+  newTask.status = status.name;
+  return newTask;
+};
+
 const normalizeTags = tagsStr => tagsStr.split(/\W/).filter(el => el !== '').map(tag => tag.toLowerCase());
+
 
 export default (router) => {
   const checkAuthMw = checkAuth(router, 'You must be logged in to add task');
   const isExistTaskMw = isExistTask(router);
 
   router
-    .get('tasks', '/tasks', async (ctx) => {
-      const tasks = await Task.findAll();
+    .get('tasks', '/tasks', checkAuthMw, async (ctx) => {
+      const allTasks = await Task.findAll();
+      const tasks = await Promise.all(allTasks.map(t => attachStatusName(t, t.TaskStatusId)));
       ctx.render('tasks', { tasks, title: 'Task List' });
     })
 
@@ -51,7 +51,7 @@ export default (router) => {
       const { id } = ctx.params;
       const task = await Task.findById(id);
       const tags = await task.getTags();
-      ctx.render('tasks/view', { task, tags, title: `Task: ${task.name}` });
+      ctx.render('tasks/view', { task: await attachStatusName(task), tags, title: `Task: ${task.name}` });
     })
 
 
@@ -92,6 +92,7 @@ export default (router) => {
 
 
     .patch('patchTask', '/tasks/:id', checkAuthMw, async (ctx) => {
+      debugLog('PATCH Route..........');
       const form = await ctx.request.body;
 
       const { id } = ctx.params;
@@ -101,12 +102,21 @@ export default (router) => {
         },
       });
 
+      const statusName = form.status;
+
+      const taskStatus = await TaskStatus.findOne({
+        where: {
+          name: statusName,
+        },
+      });
+
+      task.setTaskStatus(taskStatus);
+
       const tagNameArr = normalizeTags(form.tags);
 
-      debugLog('PATCH Route..........');
       debugLog('\nid:\n', id);
       debugLog('\ntask:\n', task);
-      debugLog('\form:\n', form);
+      debugLog('\nform:\n', form);
 
       const statusList = await TaskStatus.findAll();
 
@@ -114,6 +124,7 @@ export default (router) => {
         await task.update(form);
         await setTagsToTask(Tag, tagNameArr, task);
         await task.update({ tags: tagNameArr.join(', ') });
+
         ctx.flash.set('Task has been updated');
         ctx.redirect(router.url('viewTask', { id }));
       } catch (e) {
