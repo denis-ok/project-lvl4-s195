@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: DataTypes.STRING,
     TaskStatusId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       defaultValue: 2
     },
     tags: {

@@ -7,12 +7,12 @@ const f = async () => {
   Task.belongsToMany(Tag, { through: 'TaskTag' });
   Tag.belongsToMany(Task, { through: 'TaskTag' });
 
-  TaskStatus.hasMany(Task, { as: 'Tasks' });
+  TaskStatus.hasMany(Task, { foreignKey: 'TaskStatusId', as: 'Tasks' });
   Task.belongsTo(TaskStatus);
 
   await User.sync({ force: true });
-  await Task.sync({ force: true });
   await TaskStatus.sync({ force: true });
+  await Task.sync({ force: true });
   await Tag.sync({ force: true });
   await TaskTag.sync({ force: true });
 
@@ -34,7 +34,6 @@ const f = async () => {
     name: 'First Task Title',
     description: 'This is task description. Need to do many things.',
     creator: '1',
-    // TaskStatusId: '1',
   });
 };
 
