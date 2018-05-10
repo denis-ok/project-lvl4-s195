@@ -9,7 +9,7 @@ export default (router) => {
   const checkAuthMw = checkAuth(router, 'You must be logged in to add or edit status');
 
   router
-    .get('taskStatuses', '/taskstatuses', async (ctx) => {
+    .get('taskStatuses', '/taskstatuses', checkAuthMw, async (ctx) => {
       const statuses = await TaskStatus.findAll();
       const status = await TaskStatus.build({});
       ctx.render('taskStatuses', { statuses, formObj: buildFormObj(status), title: 'Task Statuses List' });
@@ -80,16 +80,9 @@ export default (router) => {
       const emptyStatus = await TaskStatus.findById(1);
       await emptyStatus.setTasks(tasksToChangeStatus);
 
-      try {
-        await taskStatus.destroy();
-        ctx.flash.set(`Status "${taskStatus.name}" has been deleted`);
-        ctx.redirect(router.url('taskStatuses'));
-      } catch (e) {
-        debugLog('\nERROR:\n', e);
-        const errorString = e.errors.map(err => `${err.type}: ${err.message}`).join(', ');
-        ctx.flash.set(`Error when deleting status "${taskStatus.name}": ${errorString}`);
-        ctx.redirect(router.url('taskStatuses'));
-      }
+      await taskStatus.destroy();
+      ctx.flash.set(`Status "${taskStatus.name}" has been deleted`);
+      ctx.redirect(router.url('taskStatuses'));
     });
 };
 
