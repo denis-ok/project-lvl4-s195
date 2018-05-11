@@ -2,8 +2,8 @@ import request from 'supertest';
 import faker from 'faker';
 import { User } from '../src/models';
 import app from '../src';
+import getSessionCookie from '../src/utils/testUtils';
 
-const prepareCookies = str => str.split(',').map(item => item.split(' ')[0]).join(' ');
 
 const genUser = () => ({
   email: faker.internet.email(),
@@ -37,10 +37,12 @@ describe('requests', () => {
     expect(res.status).toEqual(200);
   });
 
+
   it('GET, Should Show Sign Up page', async () => {
     const res = await request(server).get('/users/new');
     expect(res.status).toEqual(200);
   });
+
 
   it('GET, Should show profile page (user exist)', async () => {
     await request(server).post('/users').send(form);
@@ -50,10 +52,12 @@ describe('requests', () => {
     expect(res.text).toEqual(expect.stringContaining(form.firstName));
   });
 
+
   it('GET, Should Redirect to main page (user NOT exist)', async () => {
     const res1 = await request(server).get('/users/profile/notexist');
     expect(res1.status).toEqual(302);
   });
+
 
   it('POST, Should Create New User In Database', async () => {
     const res = await request(server).post('/users').send(form);
@@ -69,6 +73,7 @@ describe('requests', () => {
     expect(user.email).toEqual(form.email);
   });
 
+
   it('POST, Should NOT Create Same Users In Database', async () => {
     const usersBefore = await User.findAll();
 
@@ -81,6 +86,7 @@ describe('requests', () => {
     expect(res2.status).toEqual(200);
     expect(usersAfter).toHaveLength(usersBefore.length + 1);
   });
+
 
   it('POST, Should Create 10 Users In Database', async () => {
     const regRandomUser = async () => {
@@ -95,25 +101,21 @@ describe('requests', () => {
     expect(usersAfter).toHaveLength(10);
   });
 
+
   it('GET, Should NOT show edit profile page (not logged in)', async () => {
     const res = await request(server).get('/users/edit');
     expect(res.status).toEqual(302);
   });
 
+
   it('GET, PATCH, Should edit profile page (logged in)', async () => {
     await request(server).post('/users').send(form);
 
-    const res1 = await request(server)
-      .post('/session')
-      .send({ email: form.email, password: form.password });
+    const cookieForSet = await getSessionCookie(request, server, form);
+    const resLoggedIn = await request(server).get('/users/edit').set('cookie', cookieForSet);
 
-    const cookieString = res1.headers['set-cookie'][0];
-    const cookieForSet = prepareCookies(cookieString);
-
-    const res2 = await request(server).get('/users/edit').set('cookie', cookieForSet);
-
-    expect(res2.status).toEqual(200);
-    expect(res2.text).toEqual(expect.stringContaining('Edit Profile'));
+    expect(resLoggedIn.status).toEqual(200);
+    expect(resLoggedIn.text).toEqual(expect.stringContaining('Edit Profile'));
 
     const userAfter = {
       email: 'john@brown.com',
@@ -130,5 +132,27 @@ describe('requests', () => {
 
     expect(res3.text).toEqual(expect.stringContaining(userAfter.firstName));
     expect(res3.text).toEqual(expect.stringContaining(userAfter.lastName));
+  });
+
+  it('GET, PATCH, Should NOT edit profile page (validation errors)', async () => {
+    await request(server).post('/users').send(form);
+
+    const cookieForSet = await getSessionCookie(request, server, form);
+
+    const userAfter = {
+      email: '',
+      firstName: 'a',
+      lastName: '123',
+    };
+
+    const res = await request(server)
+      .patch('/users')
+      .set('cookie', cookieForSet)
+      .send(userAfter);
+
+    expect(res.status).toEqual(200);
+    expect(res.text).toEqual(expect.stringContaining('Email you have entered is not valid'));
+    expect(res.text).toEqual(expect.stringContaining('must use only Alphabet letters'));
+    expect(res.text).toEqual(expect.stringContaining('length must be from 2'));
   });
 });

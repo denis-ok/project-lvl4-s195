@@ -23,7 +23,7 @@ const dataTypes = {
     validate: {
       isAlpha: {
         args: true,
-        msg: 'First or Lastname length must use only Alphabet letters',
+        msg: 'First or Lastname must use only Alphabet letters',
       },
       len: {
         args: [2, 16],
@@ -37,7 +37,7 @@ const dataTypes = {
     validate: {
       isAlpha: {
         args: true,
-        msg: 'First or Lastname length must use only Alphabet letters',
+        msg: 'First or Lastname must use only Alphabet letters',
       },
       len: {
         args: [2, 16],
