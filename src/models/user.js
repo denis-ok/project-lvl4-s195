@@ -16,6 +16,9 @@ const dataTypes = {
         msg: 'Email you have entered is not valid'
       },
     },
+    set(value) {
+      this.setDataValue('email', value.toLowerCase());
+    }
   },
   firstName: {
     type: Sequelize.STRING,
@@ -56,7 +59,6 @@ const dataTypes = {
     set(value) {
       this.setDataValue('passwordEncrypted', encrypt(value));
       this.setDataValue('password', value);
-      // return value;
     },
     validate: {
       len: {
