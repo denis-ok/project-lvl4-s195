@@ -77,8 +77,9 @@ export default (router) => {
       });
 
       const tasksToChangeStatus = await taskStatus.getTasks();
+
       const emptyStatus = await TaskStatus.findById(1);
-      await emptyStatus.setTasks(tasksToChangeStatus);
+      await emptyStatus.addTasks(tasksToChangeStatus);
 
       await taskStatus.destroy();
       ctx.flash.set(`Status "${taskStatus.name}" has been deleted`);
