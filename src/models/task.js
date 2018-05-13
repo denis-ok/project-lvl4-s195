@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   var Task = sequelize.define('Task', {
     name: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           args: true,
@@ -15,18 +16,19 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     description: DataTypes.STRING,
-    TaskStatusId: {
+    taskStatusId: {
       type: DataTypes.INTEGER,
       defaultValue: 2
+    },
+    assignedTo: {
+      type: DataTypes.INTEGER,
+    },
+    creatorId: {
+      type: DataTypes.INTEGER,
     },
     tags: {
       type: DataTypes.STRING,
       defaultValue: '',
-    },
-    creator: DataTypes.STRING,
-    assignedTo: {
-      type: DataTypes.STRING,
-      defaultValue: 'no worker',
     },
   }, {});
 
