@@ -36,26 +36,53 @@ block content
             th Title
             th Status
             th Creator
-            th Assigned to
+            th Worker
             th Tags
             th Actions
         tbody
-          if !tasks
-            tr
-              td= 'Dummy title'
-              td= 'Dummy status'
-              td= 'Dummy creator'
-              td= 'Dummy worker'
-              td= 'Dummy tag1, Dummy tag2'
-          else
+          if tasks
             each task in tasks
               tr
                 td= task.name
                 td= task.status
                 td= task.creator
-                td= task.assignedTo
-                td= task.tags
+                td= task.worker
+                td= task.tagsString
                 td
                   a.btn.btn-success.btn-sm.m-1(href=`/tasks/${task.id}`) View
                   a.btn.btn-primary.btn-sm.m-1(href=`/tasks/${task.id}/edit`) Edit
-                  //- a.btn.btn-danger.btn-sm.m-1(href=`/tasks/${task.id}/delete`) Del
+
+  //- .container
+  //-   .table-responsive
+  //-     table.table.table-stripped
+  //-       thead
+  //-         tr
+  //-           th Title
+  //-           th Status Id
+  //-           th Creator Id
+  //-           th Worker Id
+  //-           th Tags
+  //-           th Actions
+  //-       tbody
+  //-         if !tasks
+  //-           tr
+  //-             td= 'Dummy title'
+  //-             td= 'Dummy status'
+  //-             td= 'Dummy creator'
+  //-             td= 'Dummy worker'
+  //-             td= 'Dummy tag1, Dummy tag2'
+  //-         else
+  //-           each task in tasks
+  //-             tr
+  //-               td= task.name
+  //-               td= task.taskStatusId
+  //-               td= task.creatorId
+  //-               td= task.assignedTo
+  //-               td= task.tags
+  //-               td
+  //-                 a.btn.btn-success.btn-sm.m-1(href=`/tasks/${task.id}`) View
+  //-                 a.btn.btn-primary.btn-sm.m-1(href=`/tasks/${task.id}/edit`) Edit
+  //-                 //- a.btn.btn-danger.btn-sm.m-1(href=`/tasks/${task.id}/delete`) Del
+
+ 
+

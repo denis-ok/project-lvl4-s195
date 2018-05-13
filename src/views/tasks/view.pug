@@ -5,36 +5,36 @@ block content
     .py-4.text-center
       h4= task.name
 
-  .text-center
-    .container.text-center
-      .card-group
-        .card
-          .card-header Creator
-          .card-body= task.creator
-        .card
-          .card-header Status
-          .card-body= task.status
-        .card
-          .card-header Tags
+  if task
+    .text-center
+      .container.text-center
+        .card-group
+          .card
+            .card-header creator
+            .card-body= task.creator
+          .card
+            .card-header status
+            .card-body= task.status
+          .card
+            .card-header tags
+            .card-body= task.tagsString
+          .card
+            .card-header worker
+            .card-body= task.worker
+        .card-group.mt-4
+          .card
+            .card-header Created At
+            .card-body= task.createdAt
+          .card
+            .card-header Updated At
+            .card-body= task.updatedAt
+        .card.mt-4
+          .card-header Description
+          .card-body= task.description
+        .card.mt-4
+          .card-header Actions
           .card-body
-            p= tags.map(t => t.name).join(', ')
-        .card
-          .card-header Workers
-          .card-body= task.assignedTo
-      .card-group.mt-4
-        .card
-          .card-header Created At
-          .card-body= task.createdAt
-        .card
-          .card-header Updated At
-          .card-body= task.updatedAt
-      .card.mt-4
-        .card-header Description
-        .card-body= task.description
-      .card.mt-4
-        .card-header Actions
-        .card-body
-          a.btn.btn-success.m-1(href=`/tasks/${task.id}`) View
-          a.btn.btn-primary.m-1(href=`/tasks/${task.id}/edit`) Edit
+            a.btn.btn-success.m-1(href=`/tasks/${task.id}`) View
+            a.btn.btn-primary.m-1(href=`/tasks/${task.id}/edit`) Edit
 
 

@@ -24,3 +24,22 @@ mixin input(formObj, property, options = { as: 'text' })
 mixin button(value = 'Submit', type = 'submit')
   .form-group.pt-3
     input(class='btn btn-primary btn-block' type=`${type}` value=`${value}`)
+
+
+mixin dropdownStatuses(statuses)
+  .form-group
+    label status
+    select.form-control(name= 'status')
+      if statuses.length > 0
+        each status in statuses
+          option= status.name
+
+mixin dropdownUsers(users)
+  .form-group
+    label assign to
+    select.form-control(name= 'worker')
+      if users.length > 0
+        each user in users
+          option= `${user.id} | ${user.getFullname()} | ${user.email}`
+
+

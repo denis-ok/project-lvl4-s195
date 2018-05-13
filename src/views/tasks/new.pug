@@ -9,7 +9,14 @@ block content
     +formFor({ url: urlFor('tasks'), method: 'post' })
       +input(formObj, 'name')
       +input(formObj, 'description')
-      +input(formObj, 'assignedTo')
       +input(formObj, 'tags')
+      +dropdownUsers(users)
+      //- .form-group
+      //-   label Assign Worker
+      //-   select.form-control(name='worker')
+      //-     option No worker
+      //-     if users
+      //-       each user in users
+      //-         option= `${user.id} | ${user.getFullname()} | ${user.email}`
       +button()
 

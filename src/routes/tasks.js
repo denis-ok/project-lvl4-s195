@@ -1,7 +1,7 @@
 import debugLib from 'debug';
 import buildFormObj from '../utils/formObjectBuilder';
 import setTagsToTask from '../utils/setTagsToTask';
-import { Task, TaskStatus, Tag } from '../models';
+import { Task, TaskStatus, Tag, User } from '../models';
 import checkAuth from '../utils/middlewares';
 
 const debugLog = debugLib('app:routes:tasks.js');
@@ -19,12 +19,26 @@ const isExistTask = router => async (ctx, next) => {
   ctx.redirect(router.url('tasks'));
 };
 
-const attachStatusName = async (task) => {
+const getTagNames = coll => Promise.all(coll.map(t => t.name));
+
+const prepareTaskForView = async (task) => {
+  const obj = task.dataValues;
   const status = await task.getTaskStatus();
-  const newTask = task;
-  newTask.status = status.name;
-  return newTask;
+  const creator = await task.getCreator();
+  const worker = await task.getWorker();
+  const tagsColl = await task.getTags();
+  const tagsArr = await getTagNames(tagsColl);
+  const tagsString = tagsArr.join(', ');
+
+  obj.status = status ? status.name : '';
+  obj.creator = creator ? creator.getFullname() : '';
+  obj.worker = worker ? worker.getFullname() : '';
+  obj.tagsString = tagsString || '';
+
+  return obj;
 };
+
+const prepareTasksForView = coll => Promise.all(coll.map(t => prepareTaskForView(t)));
 
 const normalizeTags = tagsStr => tagsStr.split(/\W/).filter(el => el !== '').map(tag => tag.toLowerCase());
 
@@ -36,66 +50,77 @@ export default (router) => {
   router
     .get('tasks', '/tasks', checkAuthMw, async (ctx) => {
       const allTasks = await Task.findAll();
-      const tasks = await Promise.all(allTasks.map(t => attachStatusName(t, t.TaskStatusId)));
-      ctx.render('tasks', { tasks, title: 'Task List' });
+      const preparedTasks = await prepareTasksForView(allTasks);
+      ctx.render('tasks', { tasks: preparedTasks, title: 'Task List' });
     })
 
 
     .get('newTask', '/tasks/new', checkAuthMw, async (ctx) => {
       const task = await Task.build();
-      ctx.render('tasks/new', { formObj: buildFormObj(task), title: 'New Task' });
+      const users = await User.findAll();
+      ctx.render('tasks/new', { users, formObj: buildFormObj(task), title: 'New Task' });
     })
 
 
     .get('viewTask', '/tasks/:id', checkAuthMw, isExistTaskMw, async (ctx) => {
       const { id } = ctx.params;
       const task = await Task.findById(id);
-      const tags = await task.getTags();
-      ctx.render('tasks/view', { task: await attachStatusName(task), tags, title: `Task: ${task.name}` });
+      ctx.render('tasks/view', { task: await prepareTaskForView(task), title: `Task: ${task.name}` });
     })
 
 
     .get('editTask', '/tasks/:id/edit', checkAuthMw, isExistTaskMw, async (ctx) => {
       const { id } = ctx.params;
       const task = await Task.findById(id);
+      const tagsColl = await task.getTags();
+      const tagsArr = await getTagNames(tagsColl);
+      const tagsString = tagsArr.join(', ');
 
-      const statusList = await TaskStatus.findAll();
-      ctx.render('tasks/edit', { statusList, formObj: buildFormObj(task), title: 'Edit Task' });
+      const users = await User.findAll();
+      const statuses = await TaskStatus.findAll();
+
+      ctx.render('tasks/edit', {
+        tags: tagsString, users, statuses, formObj: buildFormObj(task), title: 'Edit Task',
+      });
     })
 
 
     .post('tasks', '/tasks', checkAuthMw, async (ctx) => {
-      debugLog('\nctx.request.body:\n', ctx.request.body);
-      debugLog('\nctx.session:\n', ctx.session);
-
+      debugLog('POST Route..........');
       const { userId } = await ctx.session;
       const form = await ctx.request.body;
+
       const tagNameArr = normalizeTags(form.tags);
 
-      form.creator = userId;
-
       const task = await Task.build(form);
-      const statusList = await TaskStatus.findAll();
+
+      const workerId = form.worker.split(' ')[0];
+
+      const statuses = await TaskStatus.findAll();
+      const users = await User.findAll();
 
       try {
         await task.save();
         await setTagsToTask(Tag, tagNameArr, task);
-        await task.update({ tags: tagNameArr.join(', ') });
+        task.setCreator(userId);
+        task.setWorker(workerId);
 
         ctx.flash.set('Task has been created');
         ctx.redirect(router.url('tasks'));
       } catch (e) {
         debugLog('\nERROR:\n', e);
-        ctx.render('tasks/new', { statusList, formObj: buildFormObj(task, e), title: 'Edit Task (errors)' });
+        ctx.render('tasks/new', {
+          statuses, users, formObj: buildFormObj(task, e), title: 'Edit Task (errors)',
+        });
       }
     })
 
 
-    .patch('patchTask', '/tasks/:id', checkAuthMw, async (ctx) => {
+    .patch('patchTask', '/tasks/:id', checkAuthMw, isExistTaskMw, async (ctx) => {
       debugLog('PATCH Route..........');
+      const { id } = ctx.params;
       const form = await ctx.request.body;
 
-      const { id } = ctx.params;
       const task = await Task.findOne({
         where: {
           id,
@@ -103,33 +128,31 @@ export default (router) => {
       });
 
       const statusName = form.status;
-
       const taskStatus = await TaskStatus.findOne({
         where: {
           name: statusName,
         },
       });
 
-      task.setTaskStatus(taskStatus);
-
+      const workerId = form.worker.split(' ')[0];
       const tagNameArr = normalizeTags(form.tags);
+      const statuses = await TaskStatus.findAll();
+      const users = await User.findAll();
 
-      debugLog('\nid:\n', id);
-      debugLog('\ntask:\n', task);
-      debugLog('\nform:\n', form);
-
-      const statusList = await TaskStatus.findAll();
 
       try {
         await task.update(form);
         await setTagsToTask(Tag, tagNameArr, task);
-        await task.update({ tags: tagNameArr.join(', ') });
+        task.setTaskStatus(taskStatus);
+        task.setWorker(workerId);
 
         ctx.flash.set('Task has been updated');
         ctx.redirect(router.url('viewTask', { id }));
       } catch (e) {
         debugLog('\nERROR:\n', e);
-        ctx.render('tasks/edit', { statusList, formObj: buildFormObj(task, e), title: 'Edit Task (errors)' });
+        ctx.render('tasks/edit', {
+          users, statuses, formObj: buildFormObj(task, e), title: 'Edit Task (errors)',
+        });
       }
     });
 };
