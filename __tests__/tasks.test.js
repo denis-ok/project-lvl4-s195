@@ -1,7 +1,7 @@
 import request from 'supertest';
 import faker from 'faker';
-import { User, Task, TaskTag, Tag } from '../src/models';
-import initModels from '../src/initModels';
+import { User, Task, Tag, TaskStatus } from '../src/models';
+import { initModels } from '../src/initModels';
 import app from '../src';
 import getSessionCookie from '../src/utils/testUtils';
 
@@ -12,38 +12,62 @@ const userForm = {
   password: faker.internet.password(),
 };
 
-// const genTaskForm = () => ({
-//   name: 'do something',
-//   description: 'task description text',
-//   tags: 'tag1, tag2, tag3',
-// });
-
 const taskForm1 = {
-  name: 'do something',
-  description: 'task description text',
+  name: 'First Task Title',
+  description: 'This is task description. Need to do many things.',
+  taskStatusId: '1',
   tags: 'tag1, tag2, tag3',
+  worker: '1 | name | email',
 };
 
 const taskForm2 = {
-  name: 'do something more',
-  description: 'another task description text',
+  name: 'Second Task Title',
+  description: 'This is second task description. Need to do many things.',
+  taskStatusId: '1',
   tags: 'tag1, tag2, tag3, tag4',
+  worker: '1 | name | email',
   status: 'finished',
 };
 
 const taskForm3 = {
-  name: 'do',
-  description: '',
+  name: 'T',
+  description: 'This is third task description. Need to do many things.',
+  taskStatusId: '1',
   tags: '',
-  status: '',
+  worker: '1 | name | email',
 };
 
 const taskForm4 = {
   name: '',
-  description: '',
+  description: 'This is third task description. Need to do many things.',
+  taskStatusId: '1',
   tags: '',
-  status: '',
+  worker: '1 | name | email',
 };
+
+// const taskForm1 = {
+//   name: 'do something',
+//   description: 'task description text',
+// };
+
+// const taskForm2 = {
+//   name: 'do something more',
+//   description: 'another task description text',
+// };
+
+// const taskForm3 = {
+//   name: 'do',
+//   description: '',
+//   tags: '',
+//   status: '',
+// };
+
+// const taskForm4 = {
+//   name: '',
+//   description: '',
+//   tags: '',
+//   status: '',
+// };
 
 
 describe('requests', () => {
@@ -51,15 +75,22 @@ describe('requests', () => {
 
   beforeAll(async () => {
     await initModels();
+    await TaskStatus.bulkCreate([
+      { name: 'New' },
+      { name: 'In progress' },
+      { name: 'Finished' },
+    ]);
   });
 
   beforeEach(async () => {
     await User.sync({ force: true });
-    await TaskTag.sync({ force: true });
-    await Task.sync({ force: true });
-    await Tag.sync({ force: true });
-
     await User.create(userForm);
+
+    // await TaskTag.sync({ force: true });
+    await Task.sync({ force: true });
+    // await Tag.sync({ force: true });
+
+
     server = app().listen();
   });
 
@@ -217,8 +248,8 @@ describe('requests', () => {
       .get('/tasks/1')
       .set('cookie', cookieForSet);
 
-    expect(resGet.text).toEqual(expect.stringContaining('do something more'));
-    expect(resGet.text).toEqual(expect.stringContaining('another task description text'));
+    expect(resGet.text).toEqual(expect.stringContaining('Second Task Title'));
+    expect(resGet.text).toEqual(expect.stringContaining('second task description'));
     expect(resGet.text).toEqual(expect.stringContaining('finished'));
     expect(resGet.text).toEqual(expect.stringContaining('tag4'));
   });

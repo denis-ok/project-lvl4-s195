@@ -13,7 +13,7 @@ const genUser = () => ({
 });
 
 const form = {
-  email: faker.internet.email(),
+  email: faker.internet.email().toLowerCase(),
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
   password: faker.internet.password(),

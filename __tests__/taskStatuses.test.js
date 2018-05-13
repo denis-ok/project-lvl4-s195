@@ -1,7 +1,7 @@
 import request from 'supertest';
 import faker from 'faker';
 import { User, TaskStatus } from '../src/models';
-import initModels from '../src/initModels';
+import { initModels } from '../src/initModels';
 import app from '../src';
 import getSessionCookie from '../src/utils/testUtils';
 
@@ -24,8 +24,8 @@ describe('requests', () => {
   });
 
   beforeEach(async () => {
-    await User.sync({ force: true });
     await TaskStatus.sync({ force: true });
+    await User.sync({ force: true });
     await User.create(userForm);
 
     server = app().listen();
