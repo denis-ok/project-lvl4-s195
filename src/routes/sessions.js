@@ -16,7 +16,7 @@ export default (router) => {
       const { email, password } = ctx.request.body;
       const user = await User.findOne({
         where: {
-          email,
+          email: email.toLowerCase(),
         },
       });
 
