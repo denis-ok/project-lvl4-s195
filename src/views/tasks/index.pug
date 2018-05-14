@@ -53,8 +53,9 @@ block content
                 td= task.worker
                 td= task.tagsString
                 td
-                  a.btn.btn-success.btn-sm.m-1(href=`/tasks/${task.id}`) View
-                  a.btn.btn-primary.btn-sm.m-1(href=`/tasks/${task.id}/edit`) Edit
+                  a.btn.btn-success.btn-sm.m-1(href=urlFor('viewTask', task.id)) View
+                  a.btn.btn-primary.btn-sm.m-1(href=urlFor('editTask', task.id)) Edit
+                  a.btn.btn-danger.btn-sm.m-1(href=urlFor('deleteTask', task.id) data-method='delete') Del
 
   //- .container
   //-   .table-responsive

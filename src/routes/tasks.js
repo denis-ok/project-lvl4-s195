@@ -128,6 +128,27 @@ export default (router) => {
         debugLog('\nERROR:\n', e);
         ctx.render('tasks/edit', { formObj: buildFormObj(task, e), title: 'Edit Task (errors)' });
       }
+    })
+
+    .delete('deleteTask', '/tasks/:id', checkAuthMw, isExistTaskMw, includeStatuses, includeUsers, async (ctx) => {
+      debugLog('DELETE Route..........');
+      const { id } = ctx.params;
+
+      const task = await Task.findOne({
+        where: {
+          id,
+        },
+      });
+
+      try {
+        await task.destroy();
+        ctx.flash.set(`Task "${task.name}" has been deleted`);
+        ctx.redirect(router.url('tasks'));
+      } catch (e) {
+        debugLog('\nERROR:\n', e);
+        ctx.flash.set('Error happened when deleting task');
+        ctx.redirect(router.url('tasks'));
+      }
     });
 };
 

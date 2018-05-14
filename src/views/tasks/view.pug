@@ -34,7 +34,7 @@ block content
         .card.mt-4
           .card-header Actions
           .card-body
-            a.btn.btn-success.m-1(href=`/tasks/${task.id}`) View
-            a.btn.btn-primary.m-1(href=`/tasks/${task.id}/edit`) Edit
+            a.btn.btn-primary.m-1(href=urlFor('editTask', task.id)) Edit
+            a.btn.btn-danger.m-1(href=urlFor('deleteTask', task.id) data-method='delete') Del
 
 
