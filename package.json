@@ -1,6 +1,6 @@
 {
   "name": "hexlet-js-backend-4",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "hexlet-js-backend-project-4",
   "private": true,
   "bin": {
@@ -51,21 +51,21 @@
     "koa-session": "^5.8.1",
     "koa-static": "^4.0.2",
     "lodash": "^4.17.10",
-    "pg": "^7.4.1",
+    "pg": "^7.4.3",
     "popper.js": "^1.14.3",
     "rollbar": "^2.3.9",
-    "sequelize": "^4.37.6",
+    "sequelize": "^4.37.7",
     "sequelize-cli": "^4.0.0",
     "sqlite3": "^4.0.0"
   },
   "devDependencies": {
-    "autoprefixer": "^8.4.1",
+    "autoprefixer": "^8.5.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
@@ -75,13 +75,13 @@
     "jest": "^22.4.3",
     "jest-cli": "^22.4.3",
     "node-sass": "^4.9.0",
-    "nodemon": "^1.17.3",
-    "postcss-loader": "^2.1.4",
+    "nodemon": "^1.17.4",
+    "postcss-loader": "^2.1.5",
     "precss": "^3.1.2",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.20.3",
-    "supertest": "^3.0.0",
-    "webpack": "^4.7.0",
-    "webpack-cli": "^2.1.2"
+    "supertest": "^3.1.0",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3"
   }
 }
