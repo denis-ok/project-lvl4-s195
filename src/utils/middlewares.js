@@ -1,4 +1,4 @@
-import { User, TaskStatus, Task } from '../models';
+import { User, TaskStatus } from '../models';
 
 const checkAuth = (router, msg = 'You must be logged in') => async (ctx, next) => {
   if (ctx.state.isSignedIn()) {
@@ -10,9 +10,9 @@ const checkAuth = (router, msg = 'You must be logged in') => async (ctx, next) =
   ctx.redirect(router.url('newSession'));
 };
 
-const isExistTask = (router, taskModel) => async (ctx, next) => {
+const isExistTask = (router, Task) => async (ctx, next) => {
   const { id } = ctx.params;
-  const task = await taskModel.findById(id);
+  const task = await Task.findById(id);
 
   if (task) {
     await next();
