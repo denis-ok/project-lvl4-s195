@@ -67,6 +67,7 @@ const addDummyData = async () => {
     { name: 'tag5' },
     { name: 'tag6' },
     { name: 'tag7' },
+    { name: 'tag8' },
   ]);
 
 
@@ -102,18 +103,19 @@ const addDummyData = async () => {
     assignedTo: '4',
   });
 
-  await Task.create({
+  const task5 = await Task.create({
     name: 'Five Task Title',
     description: 'This is five task description. Need to do many things.',
-    taskStatusId: '1',
+    taskStatusId: '4',
     creatorId: '1',
     assignedTo: '1',
   });
 
-  task1.setTags([1, 2, 3]);
-  task2.setTags([4, 5, 6]);
-  task3.setTags([7]);
-  task4.setTags([1, 4, 7]);
+  await task1.setTags([1, 2, 3]);
+  await task2.setTags([4, 5, 6]);
+  await task3.setTags([7]);
+  await task4.setTags([1, 4, 7]);
+  await task5.setTags([8]);
 };
 
 export { initModels, addDummyData };
