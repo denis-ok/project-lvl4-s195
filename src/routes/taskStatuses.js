@@ -1,7 +1,7 @@
 import debugLib from 'debug';
 import buildFormObj from '../utils/formObjectBuilder';
 import { TaskStatus } from '../models';
-import checkAuth from '../utils/middlewares';
+import { checkAuth } from '../utils/middlewares';
 
 const debugLog = debugLib('app:routes:taskStatuses.js');
 

@@ -26,10 +26,10 @@ module.exports = (sequelize, DataTypes) => {
     creatorId: {
       type: DataTypes.INTEGER,
     },
-    tags: {
-      type: DataTypes.STRING,
-      defaultValue: '',
-    },
+    // tags: {
+    //   type: DataTypes.STRING,
+    //   defaultValue: '',
+    // },
   }, {});
 
   Task.associate = function(models) {

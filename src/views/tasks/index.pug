@@ -6,26 +6,30 @@ block content
     .container.text-left
       form(action='/tasks/' method='get')
         .card-group
+          //- .card
+          //-   .card-body
+          //-     label Email contains:
+          //-     input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='email')
+          //- .card
+          //-   .card-body
+          //-     label Title contains:
+          //-     input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='title')
           .card
             .card-body
-              label Email contains:
-              input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='email')
-          .card
-            .card-body
-              label Title contains:
-              input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='title')
-          .card
-            .card-body
-              label Status:
-              input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='status')
+              +dropdownStatuses(statuses, 'any', selectedStatus)
           .card
             .card-body
               label Tags:
               input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='tags')
           .card
             .card-body
-              label Assigned To:
-              input.form-control(type='text' placeholder='Search' aria-label='Search' method='get' name='assigned')
+              +dropdownUsers(users, 'any', selectedWorker)
+          .card
+            .card-body
+              +singleCheckbox('createdByMe', 'true', 'Only tasks created by me', checkboxCond)
+              //- .form-group.form-check
+              //-   input.form-check-input(type='checkbox' name='createdByMe' value='true')
+              //-   label.form-check-label(for='exampleCheck1') Only tasks created by me
         button.btn.btn-block.btn-outline-primary.mt-3.mb-5(type='submit') Search
 
   .container
