@@ -35,6 +35,6 @@ block content
           .card-header Actions
           .card-body
             a.btn.btn-primary.m-1(href=urlFor('editTask', task.id)) Edit
-            a.btn.btn-danger.m-1(href=urlFor('deleteTask', task.id) data-method='delete') Del
+            a.btn.btn-danger.m-1(href=urlFor('deleteTask', task.id) data-method='delete' data-confirm='Are you sure you want to delete task?') Del
 
 

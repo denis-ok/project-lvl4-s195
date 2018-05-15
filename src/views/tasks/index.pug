@@ -4,7 +4,7 @@ block content
   .text-center
     h4.my-3 Filtering
     .container.text-left
-      form(action='/tasks/' method='get')
+      form(action=urlFor('tasks') method='get')
         .card-group
           //- .card
           //-   .card-body
@@ -55,7 +55,7 @@ block content
                 td
                   a.btn.btn-success.btn-sm.m-1(href=urlFor('viewTask', task.id)) View
                   a.btn.btn-primary.btn-sm.m-1(href=urlFor('editTask', task.id)) Edit
-                  a.btn.btn-danger.btn-sm.m-1(href=urlFor('deleteTask', task.id) data-method='delete') Del
+                  a.btn.btn-danger.btn-sm.m-1(href=urlFor('deleteTask', task.id) data-method='delete' data-confirm='Are you sure you want to delete task?') Del
 
   //- .container
   //-   .table-responsive
