@@ -10,3 +10,10 @@ block content
     .py-4.text-center
       h2 Tasks Created
 
+    .container.text-left
+      if tasks
+        each task in tasks
+          h5
+            a.nav-link(href=urlFor('viewTask', task.id))= task.name
+
+

@@ -1,16 +1,18 @@
 import debugLib from 'debug';
 import buildFormObj from '../utils/formObjectBuilder';
 import { User } from '../models';
-import { checkAuth } from '../utils/middlewares';
+import { checkAuth, checkRightsEditUserMw } from '../utils/middlewares';
 
 const debugLog = debugLib('app:routes:users.js');
 
 export default (router) => {
-  const title = 'Registration';
   const checkAuthMw = checkAuth(router, 'You must be logged in to add task');
+  const checkRightsEditUser = checkRightsEditUserMw(router);
 
   router
     .get('users', '/users', async (ctx) => {
+      debugLog('ctx.state', ctx.state);
+      debugLog('ctx.session', ctx.session);
       const users = await User.findAll();
       ctx.render('users', { users, title: 'Users List' });
     })
@@ -18,11 +20,11 @@ export default (router) => {
 
     .get('newUser', '/users/new', (ctx) => {
       const user = User.build();
-      ctx.render('users/new', { formObj: buildFormObj(user), title });
+      ctx.render('users/new', { formObj: buildFormObj(user), title: 'Registration' });
     })
 
 
-    .get('userProfile', '/users/profile/:id', async (ctx) => {
+    .get('userProfile', '/users/:id', async (ctx) => {
       const { id } = ctx.params;
       const user = await User.findOne({
         where: {
@@ -35,11 +37,13 @@ export default (router) => {
         ctx.redirect(router.url('root'));
         return;
       }
-      ctx.render('users/profile', { user, title: user.getFullname() });
+
+      const tasks = await user.getCreator();
+      ctx.render('users/profile', { tasks, user, title: user.getFullname() });
     })
 
 
-    .get('editUser', '/users/edit', checkAuthMw, async (ctx) => {
+    .get('editUser', '/users/:id/edit', checkAuthMw, checkRightsEditUser, async (ctx) => {
       const { userId } = ctx.session;
 
       const user = await User.findOne({
@@ -62,7 +66,7 @@ export default (router) => {
         ctx.redirect(router.url('root'));
       } catch (e) {
         debugLog('\nERROR:\n', e);
-        ctx.render('users/new', { formObj: buildFormObj(user, e), title });
+        ctx.render('users/new', { formObj: buildFormObj(user, e), title: 'Registration' });
       }
     })
 
@@ -84,7 +88,7 @@ export default (router) => {
         ctx.redirect(router.url('editUser'));
       } catch (e) {
         debugLog('error', e);
-        ctx.render('users/edit', { formObj: buildFormObj(user, e), title });
+        ctx.render('users/edit', { formObj: buildFormObj(user, e), title: 'Edit Profile' });
       }
     });
 };

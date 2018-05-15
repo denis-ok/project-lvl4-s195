@@ -3,6 +3,7 @@ import faker from 'faker';
 import { User } from '../src/models';
 import app from '../src';
 import getSessionCookie from '../src/utils/testUtils';
+import { initModels } from '../src/initModels';
 
 
 const genUser = () => ({
@@ -21,6 +22,10 @@ const form = {
 
 describe('requests', () => {
   let server;
+
+  beforeAll(async () => {
+    await initModels();
+  });
 
   beforeEach(async () => {
     await User.sync({ force: true });
@@ -47,14 +52,14 @@ describe('requests', () => {
   it('GET, Should show profile page (user exist)', async () => {
     await request(server).post('/users').send(form);
 
-    const res = await request(server).get('/users/profile/1');
+    const res = await request(server).get('/users/1');
     expect(res.status).toEqual(200);
     expect(res.text).toEqual(expect.stringContaining(form.firstName));
   });
 
 
   it('GET, Should Redirect to main page (user NOT exist)', async () => {
-    const res1 = await request(server).get('/users/profile/notexist');
+    const res1 = await request(server).get('/users/notexist');
     expect(res1.status).toEqual(302);
   });
 
@@ -103,7 +108,7 @@ describe('requests', () => {
 
 
   it('GET, Should NOT show edit profile page (not logged in)', async () => {
-    const res = await request(server).get('/users/edit');
+    const res = await request(server).get('/users/1/edit');
     expect(res.status).toEqual(302);
   });
 
@@ -112,7 +117,7 @@ describe('requests', () => {
     await request(server).post('/users').send(form);
 
     const cookieForSet = await getSessionCookie(request, server, form);
-    const resLoggedIn = await request(server).get('/users/edit').set('cookie', cookieForSet);
+    const resLoggedIn = await request(server).get('/users/1/edit').set('cookie', cookieForSet);
 
     expect(resLoggedIn.status).toEqual(200);
     expect(resLoggedIn.text).toEqual(expect.stringContaining('Edit Profile'));
@@ -128,7 +133,7 @@ describe('requests', () => {
       .set('cookie', cookieForSet)
       .send(userAfter);
 
-    const res3 = await request(server).get('/users/profile/1');
+    const res3 = await request(server).get('/users/1');
 
     expect(res3.text).toEqual(expect.stringContaining(userAfter.firstName));
     expect(res3.text).toEqual(expect.stringContaining(userAfter.lastName));

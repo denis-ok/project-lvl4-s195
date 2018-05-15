@@ -10,6 +10,21 @@ const checkAuth = (router, msg = 'You must be logged in') => async (ctx, next) =
   ctx.redirect(router.url('newSession'));
 };
 
+
+const checkRightsEditUserMw = router => async (ctx, next) => {
+  const { userId } = ctx.session;
+  const { id } = ctx.params;
+
+  if (Number(userId) === Number(id)) {
+    await next();
+    return;
+  }
+
+  ctx.flash.set('Sorry, you can edit only your own profile');
+  ctx.redirect(router.url('root'));
+};
+
+
 const isExistTask = (router, Task) => async (ctx, next) => {
   const { id } = ctx.params;
   const task = await Task.findById(id);
@@ -42,4 +57,4 @@ const includeStatusesMw = taskStatusModel => async (ctx, next) => {
 const includeStatuses = includeStatusesMw(TaskStatus);
 
 
-export { checkAuth, isExistTask, includeStatuses, includeUsers };
+export { checkAuth, checkRightsEditUserMw, isExistTask, includeStatuses, includeUsers };
